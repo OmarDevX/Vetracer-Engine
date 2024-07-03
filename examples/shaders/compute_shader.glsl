@@ -17,7 +17,7 @@ uniform vec3 camera_front;
 uniform vec3 camera_up;
 uniform vec3 camera_right;
 uniform float fov; // Field of View in radians
-float focal_length = 5.0; // Focal length for depth of field
+float focal_length = 2.5; // Focal length for depth of field
 float aperture = 0.01; // Aperture size for depth of field
 
 uniform vec3 spheres_color[max_spheres];
@@ -256,8 +256,8 @@ void main()
 
     // Calculate light contribution (including glass handling)
     vec3 light = calculateLightContribution(rayOrigin, rayDir, rngState, vec3(1.0));
-    float bloomThreshold = 2.8;
-    float bloomIntensity = 2.0;
+    float bloomThreshold = 0.8;
+    float bloomIntensity = 1.0;
 
     applyBloom(light, light, bloomThreshold, bloomIntensity);
 
