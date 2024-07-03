@@ -23,7 +23,6 @@ float aperture = 0.01; // Aperture size for depth of field
 uniform vec3 spheres_color[max_spheres];
 uniform vec3 spheres_position[max_spheres];
 uniform float spheres_radius[max_spheres];
-uniform bool spheres_isglass[max_spheres]; // Indicates if the sphere is glass
 uniform float spheres_roughness[max_spheres];
 uniform float spheres_emission[max_spheres];
 
@@ -119,15 +118,17 @@ void applyBloom(inout vec3 color, vec3 light, float threshold, float intensity)
     bloomColor *= intensity;
     color += bloomColor;
 }
+
 vec3 calculateLightContribution(vec3 rayOrigin, vec3 rayDir, inout uint rngState, vec3 contribution)
 {
     vec3 light = vec3(0.0);
-    
+
     for (int bounce = 0; bounce < 5; ++bounce)
     {
         // Track closest sphere information
         float closestIntersection = 9999.0;
         int closestSphereIndex = -1;
+        float sphereRoughness = 0.0;
 
         // Find closest sphere intersection
         for (int i = 0; i < max_spheres; ++i)
@@ -148,6 +149,7 @@ vec3 calculateLightContribution(vec3 rayOrigin, vec3 rayDir, inout uint rngState
                 {
                     closestIntersection = temp;
                     closestSphereIndex = i;
+                    sphereRoughness = spheres_roughness[i];
                 }
             }
         }
@@ -157,58 +159,22 @@ vec3 calculateLightContribution(vec3 rayOrigin, vec3 rayDir, inout uint rngState
         {
             vec3 sphere_position = spheres_position[closestSphereIndex];
             float sphere_radius = spheres_radius[closestSphereIndex];
-
-            // Calculate intersection point and normal
             vec3 hit_point = rayOrigin + rayDir * closestIntersection;
             vec3 normal = normalize(hit_point - sphere_position);
-            
-            // Check if the sphere is glass
-            if (spheres_isglass[closestSphereIndex])
+
+            // Calculate reflection direction based on roughness
+            vec3 reflected = reflect(rayDir, normal);
+            float reflectivity = mix(1.0, 0.0, sphereRoughness); // Convert roughness to reflectivity
+
+            // Determine if the sphere is reflective enough to reflect
+            if (random(rngState) < reflectivity)
             {
-                float ni_over_nt;
-                vec3 outward_normal;
-                float cosine;
-
-                if (dot(rayDir, normal) > 0.0)
-                {
-                    outward_normal = -normal;
-                    ni_over_nt = 1.5; // Refractive index of glass
-                    cosine = dot(rayDir, normal);
-                    cosine = sqrt(1.0 - ni_over_nt * ni_over_nt * (1.0 - cosine * cosine));
-                }
-                else
-                {
-                    outward_normal = normal;
-                    ni_over_nt = 1.0 / 1.5; // Inverse refractive index
-                    cosine = -dot(rayDir, normal);
-                }
-
-                vec3 refracted;
-                float reflect_prob;
-                if (refract(rayDir, outward_normal, ni_over_nt, refracted))
-                {
-                    reflect_prob = schlick(cosine, 1.5);
-                }
-                else
-                {
-                    reflect_prob = 1.0;
-                }
-
-                vec3 reflected = reflect(rayDir, normal);
-                if (random(rngState) < reflect_prob)
-                {
-                    rayDir = reflected;
-                }
-                else
-                {
-                    rayDir = refracted;
-                }
-
-                rayOrigin = hit_point + normal * 0.001;
+                rayDir = reflected;
+                rayOrigin = hit_point + rayDir * 0.001;
             }
             else
             {
-                // Non-glass sphere intersection handling (e.g., Lambertian shading)
+                // Non-reflective path (e.g., Lambertian shading)
                 vec3 albedo = spheres_color[closestSphereIndex] / 255.0;
                 rayOrigin = hit_point + normal * 0.001;
                 rayDir = normalize(normal + random_in_unit_sphere(rngState));
@@ -216,15 +182,14 @@ vec3 calculateLightContribution(vec3 rayOrigin, vec3 rayDir, inout uint rngState
                 // Update contribution with current sphere's albedo
                 contribution *= albedo;
 
-                // Accumulate color based on sphere albedo and lighting
+                // Accumulate light based on sphere albedo and emission
                 light += albedo * spheres_emission[closestSphereIndex];
-                
             }
         }
         else
         {
-            // No sphere intersection (sky color should be used)
-            vec3 skyColor = skycolor; // Example sky color
+            // No sphere intersection (use sky color)
+            vec3 skyColor = skycolor;
             light += skyColor * contribution;
             break; // Exit the loop since no further reflections should be considered
         }
