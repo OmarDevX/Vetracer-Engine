@@ -17,7 +17,7 @@ uniform vec3 camera_front;
 uniform vec3 camera_up;
 uniform vec3 camera_right;
 uniform float fov; // Field of View in radians
-float focal_length = 2.5; // Focal length for depth of field
+float focal_length = 3.5; // Focal length for depth of field
 float aperture = 0.01; // Aperture size for depth of field
 
 uniform vec3 spheres_color[max_spheres];
@@ -123,7 +123,7 @@ vec3 calculateLightContribution(vec3 rayOrigin, vec3 rayDir, inout uint rngState
 {
     vec3 light = vec3(0.0);
 
-    for (int bounce = 0; bounce < 5; ++bounce)
+    for (int bounce = 0; bounce < 50; ++bounce)
     {
         // Track closest sphere information
         float closestIntersection = 9999.0;
