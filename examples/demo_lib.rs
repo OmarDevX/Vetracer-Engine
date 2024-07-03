@@ -521,31 +521,33 @@ fn ui(&mut self, ui: &mut egui::Ui) {
             }
             
         });
-                    ui.add(
-
-                    egui::Slider::new(&mut self.is_accumulation, 0..=1)
-                        .text("Enable accumulation")
-                );
-
-            ui.horizontal(|ui| {
-                ui.add(
-                    egui::Slider::new(&mut self.skycolor.x, 0.0..=255.0)
-                        .text("R")
-                        .clamp_to_range(true),
-                );
-                ui.add(
-                    egui::Slider::new(&mut self.skycolor.y, 0.0..=255.0)
-                        .text("G")
-                        .clamp_to_range(true),
-                );
-                ui.add(
-                    egui::Slider::new(&mut self.skycolor.z, 0.0..=255.0)
-                        .text("B")
-                        .clamp_to_range(true),
-                );
-            });
-            
     });
+    ui.label("Scene:");
+    ui.collapsing(format!("Scene"), |ui| {
+
+    ui.add(
+    
+    egui::Slider::new(&mut self.is_accumulation, 0..=1)
+        .text("Enable accumulation")
+    );
+    
+    ui.horizontal(|ui| {
+    ui.add(
+    egui::Slider::new(&mut self.skycolor.x, 0.0..=255.0)
+        .text("R")
+        .clamp_to_range(true),
+    );
+    ui.add(
+    egui::Slider::new(&mut self.skycolor.y, 0.0..=255.0)
+        .text("G")
+        .clamp_to_range(true),
+    );
+    ui.add(
+    egui::Slider::new(&mut self.skycolor.z, 0.0..=255.0)
+        .text("B")
+        .clamp_to_range(true),
+    );});
+});
 }
 
 
