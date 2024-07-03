@@ -1,0 +1,45 @@
+[package]
+name = "egui_sdl2_gl"
+version = "0.27.1"
+authors = ["Arjun Nair <arjunair@gmail.com>"]
+edition = "2018"
+description = "Backend for Egui to use with sdl2-rs and open gl"
+homepage = "https://github.com/ArjunNair/egui_sdl2_gl"
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/ArjunNair/egui_sdl2_gl"
+categories = ["gui", "graphics"]
+keywords = ["sdl2", "opengl", "egui", "gui", "gamedev"]
+include = ["**/*.rs", "Cargo.toml", "/shaders"]
+
+[dependencies]
+ahash = "~0.8"
+gl = "~0.14"
+egui = "~0.27"
+sdl2 = { version = ">= 0.36, < 0.38" }
+memoffset = "0.9.0"
+glm = "0.2.3"
+
+[dependencies.epi]
+version = "0.17"
+optional = true
+
+[features]
+default = ["sdl2_bundled"]
+
+sdl2_unsafe_textures = ["sdl2/unsafe_textures"]
+sdl2_gfx = ["sdl2/gfx"]
+sdl2_mixer = ["sdl2/mixer"]
+sdl2_image = ["sdl2/image"]
+sdl2_ttf = ["sdl2/ttf"]
+# SDL2 build features
+sdl2_use-bindgen = ["sdl2/use-bindgen"]
+sdl2_use-pkgconfig = ["sdl2/use-pkgconfig"]
+sdl2_use-vcpkg = ["sdl2/use-vcpkg"]
+sdl2_use-mac_framework = ["sdl2/use_mac_framework"]
+sdl2_bundled = ["sdl2/bundled"]
+sdl2_static-link = ["sdl2/static-link"]
+use_epi = ["epi"]
+
+[dev-dependencies]
+egui_demo_lib = "~0.27"
