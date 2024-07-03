@@ -169,7 +169,6 @@ fn main() {
         let sphere_emission=my_window.spheres_emission.clone();
         let is_accumulation=my_window.is_accumulation.clone();
         let skycolor=my_window.skycolor.clone();
-        let spheres_glass=my_window.glass_spheres.clone();
         // println!("{:?}", materials);
         let now = Instant::now();
         let delta_time: f32 = now.duration_since(last_frame_time).as_secs_f32();
@@ -197,7 +196,6 @@ fn main() {
             let roughness_loc = gl::GetUniformLocation(compute_shader_program, CString::new("spheres_roughness").unwrap().as_ptr());
             let emission_loc = gl::GetUniformLocation(compute_shader_program, CString::new("spheres_emission").unwrap().as_ptr());
             let time_loc = gl::GetUniformLocation(compute_shader_program, CString::new("currentTime").unwrap().as_ptr());
-            let glass_spheres_loc = gl::GetUniformLocation(compute_shader_program, CString::new("spheres_isglass").unwrap().as_ptr());
 
             let accumulation_loc = gl::GetUniformLocation(compute_shader_program, CString::new("is_accumulation").unwrap().as_ptr());
             let skycolor_loc = gl::GetUniformLocation(compute_shader_program, CString::new("skycolor").unwrap().as_ptr());
@@ -207,7 +205,6 @@ fn main() {
             gl::Uniform3f(skycolor_loc as GLint, skycolor.x/255.0, skycolor.y/255.0, skycolor.z/255.0);
             
             for i in 0..spheres_position.len() {
-                    gl::Uniform1i(glass_spheres_loc+i as GLint, spheres_glass[i]);
                     gl::Uniform3f(sphere_pos_loc + i as GLint, spheres_position[i].x, spheres_position[i].y, spheres_position[i].z);
                     gl::Uniform3f(sphere_color_loc + i as GLint, sphere_color[i].x, sphere_color[i].y, sphere_color[i].z);
                     gl::Uniform1f(sphere_radius_loc + i as GLint, sphere_radius[i]);
@@ -402,11 +399,9 @@ struct MyWindow {
     new_sphere_radius: f32,              // New sphere radius to be added
     new_sphere_color: Vector3<f32>,      // New sphere color to be added
     new_sphere_emission:f32,
-    new_sphere_glassness:i32,
     is_accumulation:i32,
     spheres_emission:Vec<f32>,
     skycolor:Vector3<f32>,
-    glass_spheres:Vec<i32>,
 }
 
 impl MyWindow {
@@ -416,16 +411,14 @@ impl MyWindow {
             spheres_radius: vec![1.0,9.1,99.0],                          // Initial radius (example)
             spheres_color: vec![Vector3::new(255.0, 0.0, 255.0),Vector3::new(204.0, 128.0, 51.0),Vector3::new(255.0, 0.0, 255.0)],    // Initial color (example)
             spheres_emission:vec![0.0,5.0,0.0],
-            spheres_roughness: vec![0.3,0.0,0.0],
+            spheres_roughness: vec![0.0,1.0,1.0],
             new_sphere_position: Vector3::new(0.0,0.0,0.0),
             new_sphere_radius: 1.0,
             new_sphere_color: Vector3::new(1.0, 0.0, 1.0),
-            new_sphere_roughness: 0.3,
+            new_sphere_roughness: 1.0,
             new_sphere_emission: 0.3,
             skycolor: Vector3::new(0.0,0.0,0.0),
             is_accumulation:1,
-            glass_spheres:vec![1,0,0],
-            new_sphere_glassness: 1,
         }
     }
 
@@ -466,11 +459,6 @@ fn ui(&mut self, ui: &mut egui::Ui) {
                 ui.add(
                  egui::Slider::new(&mut self.spheres_roughness[i], 0.0..=1.0)
                         .text("Roughness")
-                        .clamp_to_range(true),
-                );
-                ui.add(
-                 egui::Slider::new(&mut self.glass_spheres[i], 0..=1)
-                        .text("is GLass")
                         .clamp_to_range(true),
                 );
                 ui.add(
@@ -542,10 +530,6 @@ fn ui(&mut self, ui: &mut egui::Ui) {
                     egui::Slider::new(&mut self.new_sphere_emission, 0.0..=100.0)
                         .text("Emission")
                 );
-            ui.add(
-                    egui::Slider::new(&mut self.new_sphere_glassness, 0..=1)
-                        .text("is Glass")
-                );
 
             if ui.add(egui::Button::new("Add Sphere")).clicked() {
                 self.spheres_position.push(self.new_sphere_position);
@@ -553,7 +537,6 @@ fn ui(&mut self, ui: &mut egui::Ui) {
                 self.spheres_radius.push(self.new_sphere_radius);
                 self.spheres_color.push(self.new_sphere_color);
                 self.spheres_emission.push(self.new_sphere_emission);
-                self.glass_spheres.push(self.new_sphere_glassness);
             }
             
         });
