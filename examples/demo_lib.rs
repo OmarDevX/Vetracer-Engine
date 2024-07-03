@@ -32,7 +32,7 @@ fn main() {
     let my_up = glm::vec3(0.0, 1.0, 0.0);
     let my_yaw = -90.0;
     let my_pitch = 0.0;
-
+    let mut moveCamera=false;
     let mut my_camera = Camera::new(my_position, my_up, my_yaw, my_pitch,45.0);
 
     let sdl_context = sdl2::init().unwrap();
@@ -272,26 +272,62 @@ for event in event_pump.poll_iter() {
         }
         //
         Event::KeyUp { keycode: Some(Keycode::W), .. } => {
-            my_window.is_accumulation=1;
-        }
+            if moveCamera==false{
+                my_window.is_accumulation=1;
+
+            }        }
         Event::KeyUp { keycode: Some(Keycode::A), .. } => {
-            my_window.is_accumulation=1;
-        }
+            if moveCamera==false{
+                my_window.is_accumulation=1;
+            }        }
         Event::KeyUp { keycode: Some(Keycode::D), .. } => {
-            my_window.is_accumulation=1;
-        }
+            if moveCamera==false{
+                my_window.is_accumulation=1;
+            }        }
         Event::KeyUp { keycode: Some(Keycode::S), .. } => {
-            my_window.is_accumulation=1;
+            if moveCamera==false{
+                my_window.is_accumulation=1;
+            }
         }
-        // Event::MouseMotion { xrel, yrel, .. } => {
-            // my_camera.process_mouse_movement(xrel as f32, -yrel as f32, true);
-            // my_window.is_accumulation=0;
-        // }
+        Event::MouseButtonDown { timestamp, window_id, which, mouse_btn, clicks, x, y }=>{
+             match mouse_btn {
+                sdl2::mouse::MouseButton::Left => {
+                    egui_state.process_input(&window, event, &mut painter);
+                }
+                sdl2::mouse::MouseButton::Right => {
+                    moveCamera = true;
+                    my_window.is_accumulation = 0;
+                    // Handle right button down event if needed
+                }
+                _ => {}
+        }}
+        Event::MouseButtonUp { timestamp, window_id, which, mouse_btn, clicks, x, y }=>{
+             match mouse_btn {
+                sdl2::mouse::MouseButton::Left => {
+                    egui_state.process_input(&window, event, &mut painter);
+                }
+                sdl2::mouse::MouseButton::Right => {
+                    moveCamera = false;
+                    my_window.is_accumulation = 1;
+                    // Handle right button down event if needed
+                }
+                _ => {}
+        }}
+        // Evenst
+        Event::MouseMotion { xrel, yrel,..} => {
+            if moveCamera==false{
+                egui_state.process_input(&window, event, &mut painter);
+            }else{
+                my_camera.process_mouse_movement(xrel as f32, -yrel as f32, true);
+                my_window.is_accumulation=0;
+            }
+        }
         _ => {
             // Pass other SDL2 events to egui for processing
-            egui_state.process_input(&window, event, &mut painter);
+                egui_state.process_input(&window, event, &mut painter);
+
+            }
         }
-    }
 }
 
 } else {

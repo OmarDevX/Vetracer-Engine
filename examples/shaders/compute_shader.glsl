@@ -17,7 +17,7 @@ uniform vec3 camera_front;
 uniform vec3 camera_up;
 uniform vec3 camera_right;
 uniform float fov; // Field of View in radians
-float focal_length = 2.5; // Focal length for depth of field
+float focal_length = 5.0; // Focal length for depth of field
 float aperture = 0.01; // Aperture size for depth of field
 
 uniform vec3 spheres_color[max_spheres];
@@ -86,11 +86,6 @@ vec3 random_cosine_direction(inout uint rngState)
     float y = sin(phi) * sqrt(r2);
 
     return vec3(x, y, z);
-}
-
-void applyExposure(inout vec3 color, float exposure)
-{
-    color = 1.0 - exp(-color * exposure);
 }
 
 float schlick(float cosine, float ref_idx)
@@ -238,6 +233,7 @@ vec3 calculateLightContribution(vec3 rayOrigin, vec3 rayDir, inout uint rngState
     return light;
 }
 
+
 void main()
 {
     ivec2 texel_coords = ivec2(gl_GlobalInvocationID.xy);
@@ -260,26 +256,23 @@ void main()
 
     // Calculate light contribution (including glass handling)
     vec3 light = calculateLightContribution(rayOrigin, rayDir, rngState, vec3(1.0));
-    float bloomThreshold = 0.8;
-    float bloomIntensity = 1.0;
+    float bloomThreshold = 2.8;
+    float bloomIntensity = 2.0;
 
     applyBloom(light, light, bloomThreshold, bloomIntensity);
-    // Apply exposure and tone mapping
-    // applyExposure(light, 1.0); // Adjust exposure as needed
 
-    // Calculate accumulated color
+    // Apply exposure and tone mapping
+
     if (is_accumulation)
     {
         vec4 prevColor = imageLoad(screen, texel_coords);
         float numFrames = prevColor.a;
 
         numFrames += 1.0;
-        
-        vec3 finalColor = mix(prevColor.rgb, light / numFrames, 0.005);
-        float alpha = clamp(prevColor.a + 0.005, 0.0, 1.0);
+        vec3 accumulatedColor = (prevColor.rgb * prevColor.a + light) / numFrames;
 
         // Output final color to screen texture with accumulation
-        imageStore(screen, texel_coords, vec4(finalColor, alpha));
+        imageStore(screen, texel_coords, vec4(accumulatedColor, numFrames));
     }
     else
     {
@@ -287,3 +280,52 @@ void main()
         imageStore(screen, texel_coords, vec4(light, 1.0));
     }
 }
+
+//THE DARKER ONE, COOL BUT TOO DARK
+// void main()
+// {
+//     ivec2 texel_coords = ivec2(gl_GlobalInvocationID.xy);
+//     vec2 screen_resolution = vec2(imageSize(screen));
+//     vec2 normalized_coords = (vec2(texel_coords) + vec2(0.5)) / screen_resolution * 2.0 - 1.0;
+
+//     float aspect_ratio = screen_resolution.x / screen_resolution.y;
+
+//     // Compute ray direction using camera vectors with FOV adjustment
+//     float scale = tan(fov * 0.5);
+//     vec3 rayDir = normalize(camera_front + normalized_coords.x * aspect_ratio * scale * camera_right + normalized_coords.y * scale * camera_up);
+//     vec3 rayOrigin = camera_pos;
+
+//     // Depth of Field (DoF) calculations
+//     vec3 focal_point = rayOrigin + rayDir * focal_length;
+//     uint rngState = (uint(gl_GlobalInvocationID.x) * 1973u + uint(gl_GlobalInvocationID.y) * 9277u + uint(frameNumber) * 26699u + uint(currentTime * 1000.0));
+//     vec3 aperture_offset = aperture * random_in_unit_sphere(rngState);
+//     rayOrigin += aperture_offset;
+//     rayDir = normalize(focal_point - rayOrigin);
+
+//     // Calculate light contribution (including glass handling)
+//     vec3 light = calculateLightContribution(rayOrigin, rayDir, rngState, vec3(1.0));
+//     float bloomThreshold = 2.8;
+//     float bloomIntensity = 2.0;
+
+//     applyBloom(light, light, bloomThreshold, bloomIntensity);
+//     // Apply exposure and tone mapping
+//     // Calculate accumulated color
+//     if (is_accumulation)
+//     {
+//         vec4 prevColor = imageLoad(screen, texel_coords);
+//         float numFrames = prevColor.a;
+
+//         numFrames += 1.0;
+        
+//         vec3 finalColor = mix(prevColor.rgb, light / numFrames, 0.005);
+//         float alpha = clamp(prevColor.a + 0.005, 0.0, 1.0);
+
+//         // Output final color to screen texture with accumulation
+//         imageStore(screen, texel_coords, vec4(finalColor, alpha));
+//     }
+//     else
+//     {
+//         // Directly output the current frame color
+//         imageStore(screen, texel_coords, vec4(light, 1.0));
+//     }
+// }
