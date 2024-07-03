@@ -146,7 +146,7 @@ fn main() {
 
         //demo_windows.ui(&egui_ctx);
 
-        egui::Window::new("Custom Window")
+        egui::Window::new("Sandbox Window")
             .resizable(true) // Allow resizing
             .default_size([800.0, 800.0]) // Set default size
             .min_size([200.0, 150.0]) // Set minimum size
@@ -415,7 +415,7 @@ impl MyWindow {
             spheres_position: vec![Vector3::new(0.0, 0.0, 0.0),Vector3::new(12.4, 2.9, -14.2),Vector3::new(0.0, -100.0, 0.0)], // Initial position (example)
             spheres_radius: vec![1.0,9.1,99.0],                          // Initial radius (example)
             spheres_color: vec![Vector3::new(255.0, 0.0, 255.0),Vector3::new(204.0, 128.0, 51.0),Vector3::new(255.0, 0.0, 255.0)],    // Initial color (example)
-            spheres_emission:vec![0.0,20.0,0.0],
+            spheres_emission:vec![0.0,5.0,0.0],
             spheres_roughness: vec![0.3,0.0,0.0],
             new_sphere_position: Vector3::new(0.0,0.0,0.0),
             new_sphere_radius: 1.0,
