@@ -136,9 +136,11 @@ vec3 calculateLightContribution(vec3 rayOrigin, vec3 rayDir, inout uint rngState
         // Find closest sphere intersection
         for (int i = 0; i < max_spheres; ++i)
         {
-            vec3 sphere_position = spheres_position[i];
+            if (i==0){
+              vec3 sphere_position = camera_pos;
+              
             float sphere_radius = spheres_radius[i];
-
+            
             vec3 oc = rayOrigin - sphere_position;
             float a = dot(rayDir, rayDir);
             float b = 2.0 * dot(oc, rayDir);
@@ -155,16 +157,39 @@ vec3 calculateLightContribution(vec3 rayOrigin, vec3 rayDir, inout uint rngState
                     sphereRoughness = spheres_roughness[i];
                 }
             }
+
+            }else{
+
+            vec3 sphere_position = spheres_position[i];
+            float sphere_radius = spheres_radius[i];
+            
+            vec3 oc = rayOrigin - sphere_position;
+            float a = dot(rayDir, rayDir);
+            float b = 2.0 * dot(oc, rayDir);
+            float c = dot(oc, oc) - sphere_radius * sphere_radius;
+            float discriminant = b * b - 4.0 * a * c;
+
+            if (discriminant > 0.0)
+            {
+                float temp = (-b - sqrt(discriminant)) / (2.0 * a);
+                if (temp > 0.0 && temp < closestIntersection)
+                {
+                    closestIntersection = temp;
+                    closestSphereIndex = i;
+                    sphereRoughness = spheres_roughness[i];
+                }
+            }
+            }
         }
 
         // Handle sphere intersection and shading
         if (closestSphereIndex != -1)
         {
+            if(closestSphereIndex==0){}
             vec3 sphere_position = spheres_position[closestSphereIndex];
             float sphere_radius = spheres_radius[closestSphereIndex];
             vec3 hit_point = rayOrigin + rayDir * closestIntersection;
             vec3 normal = normalize(hit_point - sphere_position);
-
             // Calculate reflection direction based on roughness
             vec3 reflected = reflect(rayDir, normal);
             float reflectivity = mix(1.0, 0.0, sphereRoughness); // Convert roughness to reflectivity
