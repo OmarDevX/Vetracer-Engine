@@ -24,6 +24,10 @@ pub struct Camera {
     pub speed: f32,
     pub sensitivity: f32,
     pub fov: f32, // Field of View in radians
+    pub acceleration: f32,
+    pub deceleration: f32,
+    pub friction: f32,
+    pub velocity: Vec3,
 }
 
 impl Camera {
@@ -48,6 +52,10 @@ impl Camera {
             speed: 0.4,
             sensitivity: 0.1,
             fov: fov.to_radians(), // Convert FOV to radians
+            acceleration: 0.5,
+            deceleration: 2.0,
+            friction: 0.85,
+            velocity: vec3(0.0, 0.0, 0.0),
         }
     }
 
@@ -56,13 +64,14 @@ impl Camera {
     }
 
     pub fn process_keyboard(&mut self, direction: CameraMovement, delta_time: f32) {
-        let velocity = self.speed * delta_time;
+        let acceleration = self.acceleration * delta_time;
+        let deceleration = self.deceleration * delta_time;
 
         match direction {
-            CameraMovement::Forward => self.position =self.position + self.front ,
-            CameraMovement::Backward => self.position =self.position - self.front ,
-            CameraMovement::Left => self.position =self.position - self.right ,
-            CameraMovement::Right => self.position = self.position + self.right ,
+            CameraMovement::Forward => self.velocity =self.velocity + self.front * acceleration,
+            CameraMovement::Backward => self.velocity =self.velocity - self.front * acceleration,
+            CameraMovement::Left => self.velocity =self.velocity - self.right * acceleration,
+            CameraMovement::Right => self.velocity =self.velocity + self.right * acceleration,
         }
     }
 
@@ -97,6 +106,20 @@ impl Camera {
         self.right = glm::normalize(cross(&front, &self.world_up));
         self.up = glm::normalize(cross(&self.right, &front));
         self.front = front;
+    }
+
+    pub fn update_motion(&mut self, delta_time: f32) {
+        self.velocity =self.velocity * self.friction.powf(delta_time);
+
+        if dot(self.velocity,self.velocity) < 0.001 {
+            self.velocity = vec3(0.0,0.0,0.0);
+        }
+
+        self.position =self.position + self.velocity * delta_time;
+    }
+
+    pub fn update(&mut self, delta_time: f32) {
+        self.update_motion(delta_time);
     }
 }
 
