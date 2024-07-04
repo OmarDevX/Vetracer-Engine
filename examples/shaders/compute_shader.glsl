@@ -74,6 +74,8 @@ vec3 random_in_hemisphere(inout uint rngState, vec3 normal)
         return -in_unit_sphere;
 }
 
+
+
 vec3 random_cosine_direction(inout uint rngState)
 {
     float r1 = random(rngState);
@@ -118,6 +120,7 @@ void applyBloom(inout vec3 color, vec3 light, float threshold, float intensity)
     bloomColor *= intensity;
     color += bloomColor;
 }
+
 
 vec3 calculateLightContribution(vec3 rayOrigin, vec3 rayDir, inout uint rngState, vec3 contribution)
 {
@@ -183,7 +186,8 @@ vec3 calculateLightContribution(vec3 rayOrigin, vec3 rayDir, inout uint rngState
                 contribution *= albedo;
 
                 // Accumulate light based on sphere albedo and emission
-                light += albedo * spheres_emission[closestSphereIndex];
+                light += albedo * spheres_emission[closestSphereIndex]*contribution;
+                
             }
         }
         else
