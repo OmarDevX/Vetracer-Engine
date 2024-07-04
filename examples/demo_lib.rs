@@ -8,6 +8,7 @@ use egui_backend::{
     sdl2::video::SwapInterval,
     DpiScaling, ShaderVersion, Signal,
 };
+
 use std::{fs, os::unix::raw::time_t, sync::Arc, time::Instant};
 
 mod camera;
@@ -43,7 +44,7 @@ fn main() {
     gl_attr.set_double_buffer(true);
     gl_attr.set_multisample_samples(4);
     gl_attr.set_context_version(3, 2);
-
+        let last_frame_time: Instant = Instant::now();
     let window = video_subsystem
         .window(
             "Demo: Egui backend for SDL2 + GL",
@@ -70,7 +71,7 @@ fn main() {
     //let mut demo_windows = egui_demo_lib::DemoWindows::default();
     let egui_ctx = egui::Context::default();
     let mut event_pump = sdl_context.event_pump().unwrap();
-    let start_time = Instant::now();
+    let start_time: Instant = Instant::now();
     let repaint_signal = Arc::new(Signal::default());
 
     gl::load_with(|s| video_subsystem.gl_get_proc_address(s) as *const _);
@@ -121,13 +122,16 @@ fn main() {
         gl::BindBuffer(gl::ARRAY_BUFFER, 0);
         gl::BindVertexArray(0);
     }
-
+    
     // Create an instance of MyWindow
     let mut my_window = MyWindow::new();
-
-    let last_frame_time = Instant::now();
-
+    
+    
+    let now: Instant = Instant::now();
+    let delta_time: f32 = now.duration_since(last_frame_time).as_secs_f32();
     'running: loop {
+        let timernow: Instant = Instant::now();
+        let timer: f32 = timernow.duration_since(last_frame_time).as_secs_f32();
         egui_state.input.time = Some(start_time.elapsed().as_secs_f64());
         egui_ctx.begin_frame(egui_state.input.take());
 
@@ -170,8 +174,6 @@ fn main() {
         let is_accumulation=my_window.is_accumulation.clone();
         let skycolor=my_window.skycolor.clone();
         // println!("{:?}", materials);
-        let now = Instant::now();
-        let delta_time: f32 = now.duration_since(last_frame_time).as_secs_f32();
 
         unsafe {
             gl::UseProgram(compute_shader_program);
@@ -199,11 +201,13 @@ fn main() {
 
             let accumulation_loc = gl::GetUniformLocation(compute_shader_program, CString::new("is_accumulation").unwrap().as_ptr());
             let skycolor_loc = gl::GetUniformLocation(compute_shader_program, CString::new("skycolor").unwrap().as_ptr());
+            let camera_vel_loc = gl::GetUniformLocation(compute_shader_program, CString::new("camera_velocity").unwrap().as_ptr());
 
-            gl::Uniform1f(time_loc as GLint, delta_time);
+            gl::Uniform1f(time_loc as GLint, timer);
             gl::Uniform1i(accumulation_loc as GLint, is_accumulation);
             gl::Uniform3f(skycolor_loc as GLint, skycolor.x/255.0, skycolor.y/255.0, skycolor.z/255.0);
-            
+            gl::Uniform3f(camera_vel_loc as GLint, my_camera.velocity.x, my_camera.velocity.y, my_camera.velocity.z);
+
             for i in 0..spheres_position.len() {
                     gl::Uniform3f(sphere_pos_loc + i as GLint, spheres_position[i].x, spheres_position[i].y, spheres_position[i].z);
                     gl::Uniform3f(sphere_color_loc + i as GLint, sphere_color[i].x, sphere_color[i].y, sphere_color[i].z);
@@ -234,7 +238,8 @@ fn main() {
             .get(&ViewportId::ROOT)
             .expect("Missing ViewportId::ROOT")
             .repaint_delay;
-if !repaint_after.is_zero() {
+        my_camera.update(delta_time);
+
 
 // Event handling loop
 for event in event_pump.poll_iter() {
@@ -327,42 +332,7 @@ for event in event_pump.poll_iter() {
         }
 }
 
-} else {
-    for event in event_pump.poll_iter() {
-        match event {
-            Event::Quit { .. } => break 'running,
-            Event::KeyDown { keycode: Some(Keycode::W), .. } => {
-                my_camera.process_keyboard(CameraMovement::Forward,delta_time);
-            }
-            Event::KeyDown { keycode: Some(Keycode::A), .. } => {
-                my_camera.process_keyboard(CameraMovement::Left,delta_time);
-            }
-            Event::KeyDown { keycode: Some(Keycode::D), .. } => {
-                my_camera.process_keyboard(CameraMovement::Right,delta_time);
-            }
-            Event::KeyDown { keycode: Some(Keycode::S), .. } => {
-                my_camera.process_keyboard(CameraMovement::Backward,delta_time);
-            }
-            //
-            Event::KeyUp { keycode: Some(Keycode::W), .. } => {
-            my_window.is_accumulation=1;
-            }
-            Event::KeyUp { keycode: Some(Keycode::A), .. } => {
-                my_window.is_accumulation=1;
-            }
-            Event::KeyUp { keycode: Some(Keycode::D), .. } => {
-                my_window.is_accumulation=1;
-            }
-            Event::KeyUp { keycode: Some(Keycode::S), .. } => {
-                my_window.is_accumulation=1;
-            }
-            _ => {
-                // Process other SDL2 events via egui
-                egui_state.process_input(&window, event, &mut painter);
-            }
-        }
-    }
-        }
+
 
         // Use the compute shader program to process the texture
         unsafe {
@@ -385,8 +355,8 @@ for event in event_pump.poll_iter() {
 
         window.gl_swap_window();
     }
-}
 
+}
 
 struct MyWindow {
     
@@ -409,15 +379,15 @@ impl MyWindow {
         Self {
             spheres_position: vec![Vector3::new(0.0, 0.0, 0.0),Vector3::new(12.4, 2.9, -14.2),Vector3::new(0.0, -100.0, 0.0)], // Initial position (example)
             spheres_radius: vec![1.0,9.1,99.0],                          // Initial radius (example)
-            spheres_color: vec![Vector3::new(255.0, 0.0, 255.0),Vector3::new(204.0, 128.0, 51.0),Vector3::new(255.0, 0.0, 255.0)],    // Initial color (example)
-            spheres_emission:vec![0.0,5.0,0.0],
-            spheres_roughness: vec![0.0,1.0,1.0],
+            spheres_color: vec![Vector3::new(0.0, 0.0, 0.0),Vector3::new(204.0, 128.0, 51.0),Vector3::new(255.0, 170.0, 155.0)],    // Initial color (example)
+            spheres_emission:vec![0.0,0.0,0.0],
+            spheres_roughness: vec![0.2,1.0,1.0],
             new_sphere_position: Vector3::new(0.0,0.0,0.0),
             new_sphere_radius: 1.0,
             new_sphere_color: Vector3::new(1.0, 0.0, 1.0),
             new_sphere_roughness: 1.0,
             new_sphere_emission: 0.3,
-            skycolor: Vector3::new(0.0,0.0,0.0),
+            skycolor: Vector3::new(35.0,255.0,255.0),
             is_accumulation:1,
         }
     }
