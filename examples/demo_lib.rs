@@ -446,6 +446,14 @@ fn ui(&mut self, ui: &mut egui::Ui) {
                         .text("B")
                         .clamp_to_range(true),
                 );
+                if ui.add(egui::Button::new("Duplicate Sphere")).clicked() {
+                    self.spheres_position.push(self.spheres_position[i]);
+                    self.spheres_roughness.push(self.spheres_roughness[i]);
+                    self.spheres_radius.push(self.spheres_radius[i]);
+                    self.spheres_color.push(self.spheres_color[i]);
+                    self.spheres_emission.push(self.spheres_emission[i]);
+                }
+                
             });
         });
     }
