@@ -238,6 +238,7 @@ fn main() {
             .get(&ViewportId::ROOT)
             .expect("Missing ViewportId::ROOT")
             .repaint_delay;
+
         my_camera.update(delta_time);
 
 
@@ -331,7 +332,12 @@ for event in event_pump.poll_iter() {
             }
         }
 }
+        if(my_camera.is_moving()){
+            my_window.is_accumulation=0;
+        }else if(moveCamera==false){
+            my_window.is_accumulation=1;
 
+        }
 
 
         // Use the compute shader program to process the texture
@@ -377,11 +383,11 @@ struct MyWindow {
 impl MyWindow {
     fn new() -> Self {
         Self {
-            spheres_position: vec![Vector3::new(0.0, 0.0, 0.0),Vector3::new(12.4, 2.9, -14.2),Vector3::new(0.0, -100.0, 0.0)], // Initial position (example)
-            spheres_radius: vec![1.0,9.1,99.0],                          // Initial radius (example)
-            spheres_color: vec![Vector3::new(0.0, 0.0, 0.0),Vector3::new(204.0, 128.0, 51.0),Vector3::new(255.0, 170.0, 155.0)],    // Initial color (example)
-            spheres_emission:vec![0.0,0.0,0.0],
-            spheres_roughness: vec![0.2,1.0,1.0],
+            spheres_position: vec![Vector3::new(0.0, 0.0, 0.0),Vector3::new(0.0, 0.0, 0.0),Vector3::new(12.4, 2.9, -14.2),Vector3::new(0.0, -100.0, 0.0)], // Initial position (example)
+            spheres_radius: vec![1.0,1.0,9.1,99.0],                          // Initial radius (example)
+            spheres_color: vec![Vector3::new(25.0,64.0, 80.0),Vector3::new(0.0, 0.0, 0.0),Vector3::new(204.0, 128.0, 51.0),Vector3::new(255.0, 170.0, 155.0)],    // Initial color (example)
+            spheres_emission:vec![0.0,0.0,0.0,0.0],
+            spheres_roughness: vec![1.0,0.2,1.0,1.0],
             new_sphere_position: Vector3::new(0.0,0.0,0.0),
             new_sphere_radius: 1.0,
             new_sphere_color: Vector3::new(1.0, 0.0, 1.0),
@@ -397,7 +403,11 @@ fn ui(&mut self, ui: &mut egui::Ui) {
     ui.label("Spheres:");
     for i in 0..self.spheres_position.len() {
         ui.collapsing(format!("Sphere {}", i + 1), |ui| {
-            ui.label(format!("Sphere {}", i + 1));
+            if i>0{
+                ui.label(format!("Sphere {}", i + 1));
+            }else{
+                ui.label(format!("Player"));
+            }
 
             ui.vertical(|ui| {
                 ui.add(
@@ -521,12 +531,6 @@ fn ui(&mut self, ui: &mut egui::Ui) {
     });
     ui.label("Scene:");
     ui.collapsing(format!("Scene"), |ui| {
-
-    ui.add(
-    
-    egui::Slider::new(&mut self.is_accumulation, 0..=1)
-        .text("Enable accumulation")
-    );
     
     ui.horizontal(|ui| {
     ui.add(
