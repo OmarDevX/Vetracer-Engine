@@ -3,7 +3,8 @@
 layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
 layout(rgba32f, binding = 0) uniform image2D screen;
 
-const int max_spheres = 10;
+const int max_objects = 10;
+const int num_motion_blur_samples = 8; // Number of samples for motion blur
 
 struct Ray {
     vec3 Origin;
@@ -16,16 +17,16 @@ uniform vec3 camera_pos;
 uniform vec3 camera_front;
 uniform vec3 camera_up;
 uniform vec3 camera_right;
+uniform vec3 camera_velocity;
 uniform float fov; // Field of View in radians
 float focal_length = 5.0; // Focal length for depth of field
 float aperture = 0.01; // Aperture size for depth of field
 
-uniform vec3 spheres_color[max_spheres];
-uniform vec3 spheres_position[max_spheres];
-uniform float spheres_radius[max_spheres];
-uniform bool spheres_isglass[max_spheres]; // Indicates if the sphere is glass
-uniform float spheres_roughness[max_spheres];
-uniform float spheres_emission[max_spheres];
+uniform vec3 spheres_color[max_objects];
+uniform vec3 spheres_position[max_objects];
+uniform float spheres_radius[max_objects];
+uniform float spheres_roughness[max_objects];
+uniform float spheres_emission[max_objects];
 
 uniform bool is_accumulation;
 uniform float currentTime; // Uniform variable to receive current time from application
@@ -113,28 +114,31 @@ vec3 reflect(vec3 v, vec3 n)
 {
     return v - 2.0 * dot(v, n) * n;
 }
+
 void applyBloom(inout vec3 color, vec3 light, float threshold, float intensity)
 {
     vec3 bloomColor = max(vec3(0.0), light - threshold);
     bloomColor *= intensity;
     color += bloomColor;
 }
+
 vec3 calculateLightContribution(vec3 rayOrigin, vec3 rayDir, inout uint rngState, vec3 contribution)
 {
     vec3 light = vec3(0.0);
-    
-    for (int bounce = 0; bounce < 5; ++bounce)
+
+    for (int bounce = 0; bounce < 10; ++bounce)
     {
         // Track closest sphere information
         float closestIntersection = 9999.0;
         int closestSphereIndex = -1;
+        float sphereRoughness = 0.0;
 
         // Find closest sphere intersection
-        for (int i = 0; i < max_spheres; ++i)
+        for (int i = 0; i < max_objects; ++i)
         {
             vec3 sphere_position = spheres_position[i];
             float sphere_radius = spheres_radius[i];
-
+            
             vec3 oc = rayOrigin - sphere_position;
             float a = dot(rayDir, rayDir);
             float b = 2.0 * dot(oc, rayDir);
@@ -148,67 +152,32 @@ vec3 calculateLightContribution(vec3 rayOrigin, vec3 rayDir, inout uint rngState
                 {
                     closestIntersection = temp;
                     closestSphereIndex = i;
+                    sphereRoughness = spheres_roughness[i];
                 }
             }
-        }
+            }
 
         // Handle sphere intersection and shading
         if (closestSphereIndex != -1)
         {
+            if(closestSphereIndex==0){}
             vec3 sphere_position = spheres_position[closestSphereIndex];
             float sphere_radius = spheres_radius[closestSphereIndex];
-
-            // Calculate intersection point and normal
             vec3 hit_point = rayOrigin + rayDir * closestIntersection;
             vec3 normal = normalize(hit_point - sphere_position);
-            
-            // Check if the sphere is glass
-            if (spheres_isglass[closestSphereIndex])
+            // Calculate reflection direction based on roughness
+            vec3 reflected = reflect(rayDir, normal);
+            float reflectivity = mix(1.0, 0.0, sphereRoughness); // Convert roughness to reflectivity
+
+            // Determine if the sphere is reflective enough to reflect
+            if (random(rngState) < reflectivity)
             {
-                float ni_over_nt;
-                vec3 outward_normal;
-                float cosine;
-
-                if (dot(rayDir, normal) > 0.0)
-                {
-                    outward_normal = -normal;
-                    ni_over_nt = 1.5; // Refractive index of glass
-                    cosine = dot(rayDir, normal);
-                    cosine = sqrt(1.0 - ni_over_nt * ni_over_nt * (1.0 - cosine * cosine));
-                }
-                else
-                {
-                    outward_normal = normal;
-                    ni_over_nt = 1.0 / 1.5; // Inverse refractive index
-                    cosine = -dot(rayDir, normal);
-                }
-
-                vec3 refracted;
-                float reflect_prob;
-                if (refract(rayDir, outward_normal, ni_over_nt, refracted))
-                {
-                    reflect_prob = schlick(cosine, 1.5);
-                }
-                else
-                {
-                    reflect_prob = 1.0;
-                }
-
-                vec3 reflected = reflect(rayDir, normal);
-                if (random(rngState) < reflect_prob)
-                {
-                    rayDir = reflected;
-                }
-                else
-                {
-                    rayDir = refracted;
-                }
-
-                rayOrigin = hit_point + normal * 0.001;
+                rayDir = reflected;
+                rayOrigin = hit_point + rayDir * 0.001;
             }
             else
             {
-                // Non-glass sphere intersection handling (e.g., Lambertian shading)
+                // Non-reflective path (e.g., Lambertian shading)
                 vec3 albedo = spheres_color[closestSphereIndex] / 255.0;
                 rayOrigin = hit_point + normal * 0.001;
                 rayDir = normalize(normal + random_in_unit_sphere(rngState));
@@ -216,15 +185,14 @@ vec3 calculateLightContribution(vec3 rayOrigin, vec3 rayDir, inout uint rngState
                 // Update contribution with current sphere's albedo
                 contribution *= albedo;
 
-                // Accumulate color based on sphere albedo and lighting
-                light += albedo * spheres_emission[closestSphereIndex];
-                
+                // Accumulate light based on sphere albedo and emission
+                light += albedo * spheres_emission[closestSphereIndex] * contribution;
             }
         }
         else
         {
-            // No sphere intersection (sky color should be used)
-            vec3 skyColor = skycolor; // Example sky color
+            // No sphere intersection (use sky color)
+            vec3 skyColor = skycolor;
             light += skyColor * contribution;
             break; // Exit the loop since no further reflections should be considered
         }
@@ -232,7 +200,6 @@ vec3 calculateLightContribution(vec3 rayOrigin, vec3 rayDir, inout uint rngState
 
     return light;
 }
-
 
 void main()
 {
@@ -244,24 +211,38 @@ void main()
 
     // Compute ray direction using camera vectors with FOV adjustment
     float scale = tan(fov * 0.5);
-    vec3 rayDir = normalize(camera_front + normalized_coords.x * aspect_ratio * scale * camera_right + normalized_coords.y * scale * camera_up);
-    vec3 rayOrigin = camera_pos;
+    vec3 initial_rayDir = normalize(camera_front + normalized_coords.x * aspect_ratio * scale * camera_right + normalized_coords.y * scale * camera_up);
+    vec3 initial_rayOrigin = camera_pos;
+
+    vec3 accumulated_light = vec3(0.0);
+    uint rngState = (uint(gl_GlobalInvocationID.x) * 1973u + uint(gl_GlobalInvocationID.y) * 9277u + uint(frameNumber) * 26699u + uint(currentTime * 1000.0));
 
     // Depth of Field (DoF) calculations
-    vec3 focal_point = rayOrigin + rayDir * focal_length;
-    uint rngState = (uint(gl_GlobalInvocationID.x) * 1973u + uint(gl_GlobalInvocationID.y) * 9277u + uint(frameNumber) * 26699u + uint(currentTime * 1000.0));
-    vec3 aperture_offset = aperture * random_in_unit_sphere(rngState);
-    rayOrigin += aperture_offset;
-    rayDir = normalize(focal_point - rayOrigin);
+    vec3 focal_point = initial_rayOrigin + initial_rayDir * focal_length;
 
-    // Calculate light contribution (including glass handling)
-    vec3 light = calculateLightContribution(rayOrigin, rayDir, rngState, vec3(1.0));
-    float bloomThreshold = 2.8;
-    float bloomIntensity = 2.0;
+    for (int i = 0; i < num_motion_blur_samples; ++i)
+    {
+        // Motion blur: Jitter ray origin and direction based on camera velocity
+        float t = random(rngState);
+        vec3 rayOrigin = initial_rayOrigin + (t * camera_velocity)/2;
+        vec3 rayDir = normalize(focal_point - rayOrigin);
 
-    applyBloom(light, light, bloomThreshold, bloomIntensity);
+        vec3 aperture_offset = aperture * random_in_unit_sphere(rngState);
+        rayOrigin += aperture_offset;
+        rayDir = normalize(focal_point - rayOrigin);
 
-    // Apply exposure and tone mapping
+        // Calculate light contribution (including glass handling)
+        vec3 light = calculateLightContribution(rayOrigin, rayDir, rngState, vec3(1.0));
+        accumulated_light += light;
+    }
+
+    // Average the light contributions from all samples
+    vec3 final_light = accumulated_light / float(num_motion_blur_samples);
+
+    // Apply bloom
+    float bloomThreshold = 0.8;
+    float bloomIntensity = 1.0;
+    applyBloom(final_light, final_light, bloomThreshold, bloomIntensity);
 
     if (is_accumulation)
     {
@@ -269,7 +250,7 @@ void main()
         float numFrames = prevColor.a;
 
         numFrames += 1.0;
-        vec3 accumulatedColor = (prevColor.rgb * prevColor.a + light) / numFrames;
+        vec3 accumulatedColor = (prevColor.rgb * prevColor.a + final_light) / numFrames;
 
         // Output final color to screen texture with accumulation
         imageStore(screen, texel_coords, vec4(accumulatedColor, numFrames));
@@ -277,55 +258,6 @@ void main()
     else
     {
         // Directly output the current frame color
-        imageStore(screen, texel_coords, vec4(light, 1.0));
+        imageStore(screen, texel_coords, vec4(final_light, 1.0));
     }
 }
-
-//THE DARKER ONE, COOL BUT TOO DARK
-// void main()
-// {
-//     ivec2 texel_coords = ivec2(gl_GlobalInvocationID.xy);
-//     vec2 screen_resolution = vec2(imageSize(screen));
-//     vec2 normalized_coords = (vec2(texel_coords) + vec2(0.5)) / screen_resolution * 2.0 - 1.0;
-
-//     float aspect_ratio = screen_resolution.x / screen_resolution.y;
-
-//     // Compute ray direction using camera vectors with FOV adjustment
-//     float scale = tan(fov * 0.5);
-//     vec3 rayDir = normalize(camera_front + normalized_coords.x * aspect_ratio * scale * camera_right + normalized_coords.y * scale * camera_up);
-//     vec3 rayOrigin = camera_pos;
-
-//     // Depth of Field (DoF) calculations
-//     vec3 focal_point = rayOrigin + rayDir * focal_length;
-//     uint rngState = (uint(gl_GlobalInvocationID.x) * 1973u + uint(gl_GlobalInvocationID.y) * 9277u + uint(frameNumber) * 26699u + uint(currentTime * 1000.0));
-//     vec3 aperture_offset = aperture * random_in_unit_sphere(rngState);
-//     rayOrigin += aperture_offset;
-//     rayDir = normalize(focal_point - rayOrigin);
-
-//     // Calculate light contribution (including glass handling)
-//     vec3 light = calculateLightContribution(rayOrigin, rayDir, rngState, vec3(1.0));
-//     float bloomThreshold = 2.8;
-//     float bloomIntensity = 2.0;
-
-//     applyBloom(light, light, bloomThreshold, bloomIntensity);
-//     // Apply exposure and tone mapping
-//     // Calculate accumulated color
-//     if (is_accumulation)
-//     {
-//         vec4 prevColor = imageLoad(screen, texel_coords);
-//         float numFrames = prevColor.a;
-
-//         numFrames += 1.0;
-        
-//         vec3 finalColor = mix(prevColor.rgb, light / numFrames, 0.005);
-//         float alpha = clamp(prevColor.a + 0.005, 0.0, 1.0);
-
-//         // Output final color to screen texture with accumulation
-//         imageStore(screen, texel_coords, vec4(finalColor, alpha));
-//     }
-//     else
-//     {
-//         // Directly output the current frame color
-//         imageStore(screen, texel_coords, vec4(light, 1.0));
-//     }
-// }

@@ -1,4 +1,4 @@
-use egui::{FullOutput, ViewportId};
+use egui::*;
 use egui_backend::{
     egui::{self, ClippedPrimitive},
     epi::{Frame, IntegrationInfo},
@@ -8,24 +8,30 @@ use egui_backend::{
     sdl2::video::SwapInterval,
     DpiScaling, ShaderVersion, Signal,
 };
+
 use std::{fs, os::unix::raw::time_t, sync::Arc, time::Instant};
 
 mod camera;
 use camera::*;
 
 use epi::backend::FrameData;
-use glm::{Vec3, Vector3};
+use glm::{vec3, Vec3, Vector3};
 use sdl2::{event::WindowEvent, keyboard::Keycode, sys::u_int};
 // Alias the backend to something less mouthful
 use egui_sdl2_gl::{self as egui_backend, painter::{compile_shader, link_program}};
 use gl::types::*;
 use std::ptr;
 use std::ffi::CString;
+mod sphere;
+use sphere::*;
+mod window_manager;
+use window_manager::{window_manager::windows::{MainWindow, SandboxWindow}, *};
+
 
 
 
 fn main() {
-    
+    let mut is_accumulate=0;
     let mut SCREEN_WIDTH = 1280;
     let mut SCREEN_HEIGHT = 700;
     let my_position = glm::vec3(0.0, 0.0, 3.0);
@@ -43,7 +49,7 @@ fn main() {
     gl_attr.set_double_buffer(true);
     gl_attr.set_multisample_samples(4);
     gl_attr.set_context_version(3, 2);
-
+        let last_frame_time: Instant = Instant::now();
     let window = video_subsystem
         .window(
             "Demo: Egui backend for SDL2 + GL",
@@ -67,10 +73,10 @@ fn main() {
     }
     let (mut painter, mut egui_state) =
         egui_backend::with_sdl2(&window, ShaderVersion::Default, DpiScaling::Default);
-    //let mut demo_windows = egui_demo_lib::DemoWindows::default();
+    // let mut demo_windows = egui_demo_lib::DemoWindows::default(); //HERE
     let egui_ctx = egui::Context::default();
     let mut event_pump = sdl_context.event_pump().unwrap();
-    let start_time = Instant::now();
+    let start_time: Instant = Instant::now();
     let repaint_signal = Arc::new(Signal::default());
 
     gl::load_with(|s| video_subsystem.gl_get_proc_address(s) as *const _);
@@ -121,14 +127,23 @@ fn main() {
         gl::BindBuffer(gl::ARRAY_BUFFER, 0);
         gl::BindVertexArray(0);
     }
-
-    // Create an instance of MyWindow
-    let mut my_window = MyWindow::new();
-
-    let last_frame_time = Instant::now();
-
+    let mut sandbox_windowi = SandboxWindow::new();
+    
+    // Pass mutable reference to `MainWindow`
+    let mut main_window = MainWindow::new(&mut sandbox_windowi);
+    
+    let now: Instant = Instant::now();
+    let delta_time: f32 = now.duration_since(last_frame_time).as_secs_f32();
+    
     'running: loop {
+        let timernow: Instant = Instant::now();
+        let timer: f32 = timernow.duration_since(last_frame_time).as_secs_f32();
         egui_state.input.time = Some(start_time.elapsed().as_secs_f64());
+        let mut spheres_clone: Vec<Sphere> = main_window.sandbox_window.spheres.clone();
+        for sphere in main_window.sandbox_window.spheres.iter_mut() {
+            sphere.update(delta_time, &mut spheres_clone);
+        }
+
         egui_ctx.begin_frame(egui_state.input.take());
 
         let frame_time = get_frame_time(start_time);
@@ -144,81 +159,69 @@ fn main() {
             repaint_signal: repaint_signal.clone(),
         });
 
-        //demo_windows.ui(&egui_ctx);
+        // demo_windows.ui(&egui_ctx);
 
-        egui::Window::new("Custom Window")
-            .resizable(true) // Allow resizing
-            .default_size([800.0, 800.0]) // Set default size
-            .min_size([200.0, 150.0]) // Set minimum size
-            .max_size([800.0, 800.0]) // Set maximum size
-            .hscroll(false) // Disable scrolling if not needed
-            .show(&egui_ctx, |ui| {
-                my_window.ui(ui);
-            });
-
-        // Update sphere position in compute shader
-        let camera_pos= my_camera.position;
-        let camera_front=my_camera.front;
-        let camera_up=my_camera.up;
-        let camera_right=my_camera.right;
-        let camera_fov=my_camera.fov;
-        let spheres_position=my_window.spheres_position.clone();
-        let sphere_color=my_window.spheres_color.clone();
-        let sphere_radius=my_window.spheres_radius.clone();
-        let sphere_roughness=my_window.spheres_roughness.clone();
-        let sphere_emission=my_window.spheres_emission.clone();
-        let is_accumulation=my_window.is_accumulation.clone();
-        let skycolor=my_window.skycolor.clone();
-        let spheres_glass=my_window.glass_spheres.clone();
-        // println!("{:?}", materials);
-        let now = Instant::now();
-        let delta_time: f32 = now.duration_since(last_frame_time).as_secs_f32();
-
-        unsafe {
-            gl::UseProgram(compute_shader_program);
-            let camera_position_loc = gl::GetUniformLocation(compute_shader_program, CString::new("camera_pos").unwrap().as_ptr());
-            gl::Uniform3f(camera_position_loc, camera_pos[0], camera_pos[1], camera_pos[2]);
-
-            let camera_front_loc = gl::GetUniformLocation(compute_shader_program, CString::new("camera_front").unwrap().as_ptr());
-            gl::Uniform3f(camera_front_loc, camera_front[0], camera_front[1], camera_front[2]);
-
-            let camera_up_loc = gl::GetUniformLocation(compute_shader_program, CString::new("camera_up").unwrap().as_ptr());
-            gl::Uniform3f(camera_up_loc, camera_up[0], camera_up[1], camera_up[2]);
+        // egui::Window::new("Sandbox Window")
+        //     .resizable(true) // Allow resizing
+        //     .default_size([800.0, 800.0]) // Set default size
+        //     .min_size([200.0, 150.0]) // Set minimum size
+        //     .max_size([800.0, 800.0]) // Set maximum size
+        //     .hscroll(false) // Disable scrolling if not needed
+        //     .show(&egui_ctx, |ui| {
+        //         sandbox_window.ui(&egui_ctx,ui);
+        //     });
+        main_window.desktop_ui(&egui_ctx);
             
-            let camera_right_loc = gl::GetUniformLocation(compute_shader_program, CString::new("camera_right").unwrap().as_ptr());
-            gl::Uniform3f(camera_right_loc, camera_right[0], camera_right[1], camera_right[2]);
 
-            let camera_fov_loc = gl::GetUniformLocation(compute_shader_program, CString::new("fov").unwrap().as_ptr());
-            gl::Uniform1f(camera_fov_loc, camera_fov);
+       // Update sphere position in compute shader
+let camera_pos = my_camera.position;
+let camera_front = my_camera.front;
+let camera_up = my_camera.up;
+let camera_right = my_camera.right;
+let camera_fov = my_camera.fov;
+let spheres_position = main_window.sandbox_window.spheres.clone();
+let sphere_color = spheres_position.iter().map(|s| s.color).collect::<Vec<_>>();
+let sphere_radius = spheres_position.iter().map(|s| s.radius).collect::<Vec<_>>();
+let sphere_roughness = spheres_position.iter().map(|s| s.roughness).collect::<Vec<_>>();
+let sphere_emission = spheres_position.iter().map(|s| s.emission).collect::<Vec<_>>();
+let skycolor = main_window.sandbox_window.skycolor;
+// println!("{:?}", materials);
+unsafe {
+    gl::UseProgram(compute_shader_program);
+    let camera_position_loc = gl::GetUniformLocation(compute_shader_program, CString::new("camera_pos").unwrap().as_ptr());
+    gl::Uniform3f(camera_position_loc, camera_pos[0], camera_pos[1], camera_pos[2]);
+    let camera_front_loc = gl::GetUniformLocation(compute_shader_program, CString::new("camera_front").unwrap().as_ptr());
+    gl::Uniform3f(camera_front_loc, camera_front[0], camera_front[1], camera_front[2]);
+    let camera_up_loc = gl::GetUniformLocation(compute_shader_program, CString::new("camera_up").unwrap().as_ptr());
+    gl::Uniform3f(camera_up_loc, camera_up[0], camera_up[1], camera_up[2]);
+    let camera_right_loc = gl::GetUniformLocation(compute_shader_program, CString::new("camera_right").unwrap().as_ptr());
+    gl::Uniform3f(camera_right_loc, camera_right[0], camera_right[1], camera_right[2]);
+    let camera_fov_loc = gl::GetUniformLocation(compute_shader_program, CString::new("fov").unwrap().as_ptr());
+    gl::Uniform1f(camera_fov_loc, camera_fov);
+    let sphere_pos_loc = gl::GetUniformLocation(compute_shader_program, CString::new("spheres_position").unwrap().as_ptr());
+    let sphere_color_loc = gl::GetUniformLocation(compute_shader_program, CString::new("spheres_color").unwrap().as_ptr());
+    let sphere_radius_loc = gl::GetUniformLocation(compute_shader_program, CString::new("spheres_radius").unwrap().as_ptr());
+    let roughness_loc = gl::GetUniformLocation(compute_shader_program, CString::new("spheres_roughness").unwrap().as_ptr());
+    let emission_loc = gl::GetUniformLocation(compute_shader_program, CString::new("spheres_emission").unwrap().as_ptr());
+    let time_loc = gl::GetUniformLocation(compute_shader_program, CString::new("currentTime").unwrap().as_ptr());
+    let accumulation_loc = gl::GetUniformLocation(compute_shader_program, CString::new("is_accumulation").unwrap().as_ptr());
+    let skycolor_loc = gl::GetUniformLocation(compute_shader_program, CString::new("skycolor").unwrap().as_ptr());
+    let camera_vel_loc = gl::GetUniformLocation(compute_shader_program, CString::new("camera_velocity").unwrap().as_ptr());
+    gl::Uniform1f(time_loc as GLint, timer);
+    gl::Uniform1i(accumulation_loc as GLint, is_accumulate as i32);
+    gl::Uniform3f(skycolor_loc as GLint, skycolor[0] as f32 / 255.0, skycolor[1] as f32 / 255.0, skycolor[2] as f32 / 255.0);
+    gl::Uniform3f(camera_vel_loc as GLint, my_camera.velocity.x, my_camera.velocity.y, my_camera.velocity.z);
+    for i in 0..spheres_position.len() {
+        gl::Uniform3f(sphere_pos_loc + i as GLint, spheres_position[i].position[0], spheres_position[i].position[1], spheres_position[i].position[2]);
+        gl::Uniform3f(sphere_color_loc + i as GLint, sphere_color[i][0], sphere_color[i][1], sphere_color[i][2]);
+        gl::Uniform1f(sphere_radius_loc + i as GLint, sphere_radius[i]);
+        gl::Uniform1f(roughness_loc + i as GLint, sphere_roughness[i]);
+        gl::Uniform1f(emission_loc + i as GLint, sphere_emission[i]);
+    }
+    gl::DispatchCompute(SCREEN_WIDTH / 8, SCREEN_HEIGHT / 8, 1);
+    gl::MemoryBarrier(gl::SHADER_IMAGE_ACCESS_BARRIER_BIT);
+}
 
-            let sphere_pos_loc = gl::GetUniformLocation(compute_shader_program, CString::new("spheres_position").unwrap().as_ptr());
-            let sphere_color_loc = gl::GetUniformLocation(compute_shader_program, CString::new("spheres_color").unwrap().as_ptr());
-            let sphere_radius_loc = gl::GetUniformLocation(compute_shader_program, CString::new("spheres_radius").unwrap().as_ptr());
-            let roughness_loc = gl::GetUniformLocation(compute_shader_program, CString::new("spheres_roughness").unwrap().as_ptr());
-            let emission_loc = gl::GetUniformLocation(compute_shader_program, CString::new("spheres_emission").unwrap().as_ptr());
-            let time_loc = gl::GetUniformLocation(compute_shader_program, CString::new("currentTime").unwrap().as_ptr());
-            let glass_spheres_loc = gl::GetUniformLocation(compute_shader_program, CString::new("spheres_isglass").unwrap().as_ptr());
-
-            let accumulation_loc = gl::GetUniformLocation(compute_shader_program, CString::new("is_accumulation").unwrap().as_ptr());
-            let skycolor_loc = gl::GetUniformLocation(compute_shader_program, CString::new("skycolor").unwrap().as_ptr());
-
-            gl::Uniform1f(time_loc as GLint, delta_time);
-            gl::Uniform1i(accumulation_loc as GLint, is_accumulation);
-            gl::Uniform3f(skycolor_loc as GLint, skycolor.x/255.0, skycolor.y/255.0, skycolor.z/255.0);
-            
-            for i in 0..spheres_position.len() {
-                    gl::Uniform1i(glass_spheres_loc+i as GLint, spheres_glass[i]);
-                    gl::Uniform3f(sphere_pos_loc + i as GLint, spheres_position[i].x, spheres_position[i].y, spheres_position[i].z);
-                    gl::Uniform3f(sphere_color_loc + i as GLint, sphere_color[i].x, sphere_color[i].y, sphere_color[i].z);
-                    gl::Uniform1f(sphere_radius_loc + i as GLint, sphere_radius[i]);
-                    gl::Uniform1f(roughness_loc + i as GLint, sphere_roughness[i]);
-                    gl::Uniform1f(emission_loc + i as GLint, sphere_emission[i]);
-                }
-
-
-            gl::DispatchCompute(SCREEN_WIDTH / 8, SCREEN_HEIGHT / 8, 1);
-            gl::MemoryBarrier(gl::SHADER_IMAGE_ACCESS_BARRIER_BIT);
-        }
         //////
         let FullOutput {
             platform_output,
@@ -237,7 +240,9 @@ fn main() {
             .get(&ViewportId::ROOT)
             .expect("Missing ViewportId::ROOT")
             .repaint_delay;
-if !repaint_after.is_zero() {
+
+        my_camera.update(delta_time);
+
 
 // Event handling loop
 for event in event_pump.poll_iter() {
@@ -256,37 +261,37 @@ for event in event_pump.poll_iter() {
         }
         Event::KeyDown { keycode: Some(Keycode::W), .. } => {
             my_camera.process_keyboard(CameraMovement::Forward, delta_time);
-            my_window.is_accumulation=0;
+            is_accumulate=0;
         }
         Event::KeyDown { keycode: Some(Keycode::A), .. } => {
             my_camera.process_keyboard(CameraMovement::Left, delta_time);
-            my_window.is_accumulation=0;
+            is_accumulate=0;
         }
         Event::KeyDown { keycode: Some(Keycode::D), .. } => {
             my_camera.process_keyboard(CameraMovement::Right, delta_time);
-            my_window.is_accumulation=0;
+            is_accumulate=0;
         }
         Event::KeyDown { keycode: Some(Keycode::S), .. } => {
             my_camera.process_keyboard(CameraMovement::Backward, delta_time);
-            my_window.is_accumulation=0;
+            is_accumulate=0;
         }
         //
         Event::KeyUp { keycode: Some(Keycode::W), .. } => {
             if moveCamera==false{
-                my_window.is_accumulation=1;
+                is_accumulate=1;
 
             }        }
         Event::KeyUp { keycode: Some(Keycode::A), .. } => {
             if moveCamera==false{
-                my_window.is_accumulation=1;
+                is_accumulate=1;
             }        }
         Event::KeyUp { keycode: Some(Keycode::D), .. } => {
             if moveCamera==false{
-                my_window.is_accumulation=1;
+                is_accumulate=1;
             }        }
         Event::KeyUp { keycode: Some(Keycode::S), .. } => {
             if moveCamera==false{
-                my_window.is_accumulation=1;
+                is_accumulate=1;
             }
         }
         Event::MouseButtonDown { timestamp, window_id, which, mouse_btn, clicks, x, y }=>{
@@ -296,7 +301,7 @@ for event in event_pump.poll_iter() {
                 }
                 sdl2::mouse::MouseButton::Right => {
                     moveCamera = true;
-                    my_window.is_accumulation = 0;
+                    is_accumulate = 0;
                     // Handle right button down event if needed
                 }
                 _ => {}
@@ -308,7 +313,7 @@ for event in event_pump.poll_iter() {
                 }
                 sdl2::mouse::MouseButton::Right => {
                     moveCamera = false;
-                    my_window.is_accumulation = 1;
+                    is_accumulate = 1;
                     // Handle right button down event if needed
                 }
                 _ => {}
@@ -319,7 +324,7 @@ for event in event_pump.poll_iter() {
                 egui_state.process_input(&window, event, &mut painter);
             }else{
                 my_camera.process_mouse_movement(xrel as f32, -yrel as f32, true);
-                my_window.is_accumulation=0;
+                is_accumulate=0;
             }
         }
         _ => {
@@ -329,43 +334,13 @@ for event in event_pump.poll_iter() {
             }
         }
 }
+        if(my_camera.is_moving()){
+            is_accumulate=0;
+        }else if(moveCamera==false){
+            is_accumulate=1;
 
-} else {
-    for event in event_pump.poll_iter() {
-        match event {
-            Event::Quit { .. } => break 'running,
-            Event::KeyDown { keycode: Some(Keycode::W), .. } => {
-                my_camera.process_keyboard(CameraMovement::Forward,delta_time);
-            }
-            Event::KeyDown { keycode: Some(Keycode::A), .. } => {
-                my_camera.process_keyboard(CameraMovement::Left,delta_time);
-            }
-            Event::KeyDown { keycode: Some(Keycode::D), .. } => {
-                my_camera.process_keyboard(CameraMovement::Right,delta_time);
-            }
-            Event::KeyDown { keycode: Some(Keycode::S), .. } => {
-                my_camera.process_keyboard(CameraMovement::Backward,delta_time);
-            }
-            //
-            Event::KeyUp { keycode: Some(Keycode::W), .. } => {
-            my_window.is_accumulation=1;
-            }
-            Event::KeyUp { keycode: Some(Keycode::A), .. } => {
-                my_window.is_accumulation=1;
-            }
-            Event::KeyUp { keycode: Some(Keycode::D), .. } => {
-                my_window.is_accumulation=1;
-            }
-            Event::KeyUp { keycode: Some(Keycode::S), .. } => {
-                my_window.is_accumulation=1;
-            }
-            _ => {
-                // Process other SDL2 events via egui
-                egui_state.process_input(&window, event, &mut painter);
-            }
         }
-    }
-        }
+
 
         // Use the compute shader program to process the texture
         unsafe {
@@ -388,207 +363,9 @@ for event in event_pump.poll_iter() {
 
         window.gl_swap_window();
     }
-}
-
-
-struct MyWindow {
-    
-    new_sphere_roughness: f32,
-    spheres_roughness: Vec<f32>,
-    spheres_position: Vec<Vector3<f32>>, // Vector of positions for spheres
-    spheres_radius: Vec<f32>,            // Vector of radii for spheres
-    spheres_color: Vec<Vector3<f32>>,    // Vector of colors for spheres
-    new_sphere_position: Vector3<f32>,   // New sphere position to be added
-    new_sphere_radius: f32,              // New sphere radius to be added
-    new_sphere_color: Vector3<f32>,      // New sphere color to be added
-    new_sphere_emission:f32,
-    new_sphere_glassness:i32,
-    is_accumulation:i32,
-    spheres_emission:Vec<f32>,
-    skycolor:Vector3<f32>,
-    glass_spheres:Vec<i32>,
-}
-
-impl MyWindow {
-    fn new() -> Self {
-        Self {
-            spheres_position: vec![Vector3::new(0.0, 0.0, 0.0),Vector3::new(12.4, 2.9, -14.2),Vector3::new(0.0, -100.0, 0.0)], // Initial position (example)
-            spheres_radius: vec![1.0,9.1,99.0],                          // Initial radius (example)
-            spheres_color: vec![Vector3::new(255.0, 0.0, 255.0),Vector3::new(204.0, 128.0, 51.0),Vector3::new(255.0, 0.0, 255.0)],    // Initial color (example)
-            spheres_emission:vec![0.0,20.0,0.0],
-            spheres_roughness: vec![0.3,0.0,0.0],
-            new_sphere_position: Vector3::new(0.0,0.0,0.0),
-            new_sphere_radius: 1.0,
-            new_sphere_color: Vector3::new(1.0, 0.0, 1.0),
-            new_sphere_roughness: 0.3,
-            new_sphere_emission: 0.3,
-            skycolor: Vector3::new(0.0,0.0,0.0),
-            is_accumulation:1,
-            glass_spheres:vec![1,0,0],
-            new_sphere_glassness: 1,
-        }
-    }
-
-fn ui(&mut self, ui: &mut egui::Ui) {
-    // Spheres section
-    ui.label("Spheres:");
-    for i in 0..self.spheres_position.len() {
-        ui.collapsing(format!("Sphere {}", i + 1), |ui| {
-            ui.label(format!("Sphere {}", i + 1));
-
-            ui.vertical(|ui| {
-                ui.add(
-                    egui::Slider::new(&mut self.spheres_position[i].x, -100.0..=100.0)
-                        .text("X")
-                        .clamp_to_range(true),
-                );
-                ui.add(
-                    egui::Slider::new(&mut self.spheres_position[i].y, -100.0..=100.0)
-                        .text("Y")
-                        .clamp_to_range(true),
-                );
-                ui.add(
-                    egui::Slider::new(&mut self.spheres_position[i].z, -100.0..=100.0)
-                        .text("Z")
-                        .clamp_to_range(true),
-                );
-            });
-
-            ui.vertical(|ui| {
-                ui.add(
-                    egui::Slider::new(&mut self.spheres_radius[i], 0.1..=100.0)
-                        .text("Radius")
-                );
-                ui.add(
-                    egui::Slider::new(&mut self.spheres_emission[i], 0.0..=100.0)
-                        .text("Emission")
-                );
-                ui.add(
-                 egui::Slider::new(&mut self.spheres_roughness[i], 0.0..=1.0)
-                        .text("Roughness")
-                        .clamp_to_range(true),
-                );
-                ui.add(
-                 egui::Slider::new(&mut self.glass_spheres[i], 0..=1)
-                        .text("is GLass")
-                        .clamp_to_range(true),
-                );
-                ui.add(
-                    egui::Slider::new(&mut self.spheres_color[i].x, 0.0..=255.0)
-                        .text("R")
-                        .clamp_to_range(true),
-                );
-                ui.add(
-                    egui::Slider::new(&mut self.spheres_color[i].y, 0.0..=255.0)
-                        .text("G")
-                        .clamp_to_range(true),
-                );
-                ui.add(
-                    egui::Slider::new(&mut self.spheres_color[i].z, 0.0..=255.0)
-                        .text("B")
-                        .clamp_to_range(true),
-                );
-            });
-        });
-    }
-
-    // Add new sphere section
-    ui.vertical_centered(|ui| {
-        ui.collapsing("New Sphere", |ui| {
-            ui.label("New Sphere:");
-
-            ui.horizontal(|ui| {
-                ui.add(
-                    egui::Slider::new(&mut self.new_sphere_position.x, -100.0..=100.0)
-                        .text("X")
-                );
-                ui.add(
-                    egui::Slider::new(&mut self.new_sphere_position.y, -100.0..=100.0)
-                        .text("Y")
-                );
-                ui.add(
-                    egui::Slider::new(&mut self.new_sphere_position.z, -100.0..=100.0)
-                        .text("Z")
-                );
-            });
-
-            ui.horizontal(|ui| {
-                ui.add(
-                    egui::Slider::new(&mut self.new_sphere_radius, 0.1..=100.0)
-                        .text("Radius")
-                );
-                ui.add(
-                    egui::Slider::new(&mut self.new_sphere_color.x, 0.0..=255.0)
-                        .text("R")
-                        .clamp_to_range(true),
-                );
-                ui.add(
-                    egui::Slider::new(&mut self.new_sphere_color.y, 0.0..=255.0)
-                        .text("G")
-                        .clamp_to_range(true),
-                );
-                ui.add(
-                    egui::Slider::new(&mut self.new_sphere_color.z, 0.0..=255.0)
-                        .text("B")
-                        .clamp_to_range(true),
-                );
-            });
-            ui.add(
-                    egui::Slider::new(&mut self.new_sphere_roughness, 0.0..=1.0)
-                        .text("Roughness")
-                        .clamp_to_range(true),
-                );
-            ui.add(
-                    egui::Slider::new(&mut self.new_sphere_emission, 0.0..=100.0)
-                        .text("Emission")
-                );
-            ui.add(
-                    egui::Slider::new(&mut self.new_sphere_glassness, 0..=1)
-                        .text("is Glass")
-                );
-
-            if ui.add(egui::Button::new("Add Sphere")).clicked() {
-                self.spheres_position.push(self.new_sphere_position);
-                self.spheres_roughness.push(self.new_sphere_roughness);
-                self.spheres_radius.push(self.new_sphere_radius);
-                self.spheres_color.push(self.new_sphere_color);
-                self.spheres_emission.push(self.new_sphere_emission);
-                self.glass_spheres.push(self.new_sphere_glassness);
-            }
-            
-        });
-    });
-    ui.label("Scene:");
-    ui.collapsing(format!("Scene"), |ui| {
-
-    ui.add(
-    
-    egui::Slider::new(&mut self.is_accumulation, 0..=1)
-        .text("Enable accumulation")
-    );
-    
-    ui.horizontal(|ui| {
-    ui.add(
-    egui::Slider::new(&mut self.skycolor.x, 0.0..=255.0)
-        .text("R")
-        .clamp_to_range(true),
-    );
-    ui.add(
-    egui::Slider::new(&mut self.skycolor.y, 0.0..=255.0)
-        .text("G")
-        .clamp_to_range(true),
-    );
-    ui.add(
-    egui::Slider::new(&mut self.skycolor.z, 0.0..=255.0)
-        .text("B")
-        .clamp_to_range(true),
-    );});
-});
-}
-
-
 
 }
+
 
 fn create_texture(width: u32, height: u32) -> GLuint {
     let mut texture = 0;
