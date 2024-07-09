@@ -1,20 +1,21 @@
 pub mod windows{
     use egui::{Modifiers, Slider, Ui};
 
-    use crate::Sphere;
+    use crate::Object;
 
     #[derive(Clone)]
     pub struct SandboxWindow {
-        pub spheres: Vec<Sphere>,
-        pub new_sphere: Sphere,
+        pub Objects: Vec<Object>,
+        pub new_Object: Object,
         pub skycolor: [f32; 3],
+        pub is_fisheye:bool,
     }
     
     impl SandboxWindow {
         pub fn new() -> Self {
             Self {
-                spheres: Vec::new(),
-                new_sphere: Sphere {
+                Objects: Vec::new(),
+                new_Object: Object {
                     position: [0.0; 3],
                     radius: 1.0,
                     color: [120.0; 3],
@@ -27,158 +28,100 @@ pub mod windows{
                     angular_acceleration: [0.0; 3],
                     orientation: [1.0, 0.0, 0.0, 0.0],
                     mass: 1.0,
+                    is_cube: true,
+                    size: [0.0;3],
+                    is_glass: false,
+                    reflectness: 0.0,
                 },
+                is_fisheye:false,
                 skycolor: [30.0,255.0,255.0],
             }
         }
     
     pub fn ui(&mut self, ctx: &egui::Context, ui: &mut Ui) {
         let _ = ctx;
-            self.sphere_list(ui);
-            self.add_new_sphere(ui);
+            self.add_new_object(ui);
             self.scene_settings(ui);
         
     }
-    
-        pub fn sphere_list(&mut self, ui: &mut Ui) {
+
+        pub fn add_new_object(&mut self, ui: &mut Ui) {
             ui.vertical_centered(|ui| {
-                ui.label("Spheres:");
-                ui.collapsing("Sphere List", |ui| {
-                    for (i, sphere) in self.spheres.iter_mut().enumerate() {
-                        ui.horizontal(|ui| {
-                            ui.label(&format!("Sphere {}", i));
-                            ui.add(
-                                Slider::new(&mut sphere.position[0], -100.0..=100.0)
-                                    .text("X"),
-                            );
-                            ui.add(
-                                Slider::new(&mut sphere.position[1], -100.0..=100.0)
-                                    .text("Y"),
-                            );
-                            ui.add(
-                                Slider::new(&mut sphere.position[2], -100.0..=100.0)
-                                    .text("Z"),
-                            );
-                        });
-                        ui.horizontal(|ui| {
-                            ui.label(&format!("Sphere {}", i));
-                            ui.add(
-                                Slider::new(&mut sphere.velocity[0], -100.0..=100.0)
-                                    .text("X"),
-                            );
-                            ui.add(
-                                Slider::new(&mut sphere.velocity[1], -100.0..=100.0)
-                                    .text("Y"),
-                            );
-                            ui.add(
-                                Slider::new(&mut sphere.velocity[2], -100.0..=100.0)
-                                    .text("Z"),
-                            );
-                        });
-                        ui.horizontal(|ui| {
-                            ui.add(
-                                Slider::new(&mut sphere.radius, 0.1..=100.0)
-                                    .text("Radius"),
-                            );
-                            ui.add(
-                                Slider::new(&mut sphere.color[0], 0.0..=255.0)
-                                    .text("R")
-                                    .clamp_to_range(true),
-                            );
-                            ui.add(
-                                Slider::new(&mut sphere.color[1], 0.0..=255.0)
-                                    .text("G")
-                                    .clamp_to_range(true),
-                            );
-                            ui.add(
-                                Slider::new(&mut sphere.color[2], 0.0..=255.0)
-                                    .text("B")
-                                    .clamp_to_range(true),
-                            );
-                        });
-                        ui.add(
-                            Slider::new(&mut sphere.roughness, 0.0..=1.0)
-                                .text("Roughness")
-                                .clamp_to_range(true),
-                        );
-                        ui.add(
-                            Slider::new(&mut sphere.emission, 0.0..=100.0)
-                                .text("Emission"),
-                        );
-                    ui.add(egui::Checkbox::new(&mut sphere.is_static, "Make it Static"));
-                    }
-                });
-            });
-                    ui.separator();
-    
-        }
-    
-        pub fn add_new_sphere(&mut self, ui: &mut Ui) {
-            ui.vertical_centered(|ui| {
-                ui.collapsing("New Sphere", |ui| {
-                    ui.label("New Sphere:");
+                ui.collapsing("New Object", |ui| {
+                    ui.label("New Object:");
                     ui.horizontal(|ui| {
                         ui.add(
-                            Slider::new(&mut self.new_sphere.position[0], -100.0..=100.0)
+                            Slider::new(&mut self.new_Object.position[0], -100.0..=100.0)
                                 .text("X"),
                         );
                         ui.add(
-                            Slider::new(&mut self.new_sphere.position[1], -100.0..=100.0)
+                            Slider::new(&mut self.new_Object.position[1], -100.0..=100.0)
                                 .text("Y"),
                         );
                         ui.add(
-                            Slider::new(&mut self.new_sphere.position[2], -100.0..=100.0)
+                            Slider::new(&mut self.new_Object.position[2], -100.0..=100.0)
                                 .text("Z"),
                         );
                     });
                     ui.horizontal(|ui| {
                         ui.add(
-                            Slider::new(&mut self.new_sphere.radius, 0.1..=100.0)
+                            Slider::new(&mut self.new_Object.radius, 0.1..=100.0)
                                 .text("Radius"),
                         );
                         ui.add(
-                            Slider::new(&mut self.new_sphere.color[0], 0.0..=255.0)
+                            Slider::new(&mut self.new_Object.color[0], 0.0..=255.0)
                                 .text("R")
                                 .clamp_to_range(true),
                         );
                         ui.add(
-                            Slider::new(&mut self.new_sphere.color[1], 0.0..=255.0)
+                            Slider::new(&mut self.new_Object.color[1], 0.0..=255.0)
                                 .text("G")
                                 .clamp_to_range(true),
                         );
                         ui.add(
-                            Slider::new(&mut self.new_sphere.color[2], 0.0..=255.0)
+                            Slider::new(&mut self.new_Object.color[2], 0.0..=255.0)
                                 .text("B")
                                 .clamp_to_range(true),
                         );
                     });
                     ui.add(
-                        Slider::new(&mut self.new_sphere.roughness, 0.0..=1.0)
+                        Slider::new(&mut self.new_Object.roughness, 0.0..=1.0)
                             .text("Roughness")
                             .clamp_to_range(true),
                     );
                     ui.add(
-                        Slider::new(&mut self.new_sphere.emission, 0.0..=100.0)
+                        Slider::new(&mut self.new_Object.emission, 0.0..=100.0)
                             .text("Emission"),
                     );
-                    ui.add(egui::Checkbox::new(&mut self.new_sphere.is_static, "Make it Static"));
-    
-                    if ui.button("Add Sphere").clicked() {
-                        self.spheres.push(Sphere {
-                            position: self.new_sphere.position,
-                            radius: self.new_sphere.radius,
-                            color: self.new_sphere.color,
-                            roughness: self.new_sphere.roughness,
-                            emission: self.new_sphere.emission,
-                            is_static:self.new_sphere.is_static,
+                    ui.add(egui::Checkbox::new(&mut self.new_Object.is_glass, "Make it Glass"));
+                    if(self.new_Object.is_glass){
+                        ui.add(
+                            Slider::new(&mut self.new_Object.reflectness, 0.0..=10.0)
+                                .text("Reflectness"),
+                        );
+                    }
+                    ui.add(egui::Checkbox::new(&mut self.new_Object.is_static, "Make it Static"));
+                    ui.add(egui::Checkbox::new(&mut self.new_Object.is_cube, "Make it Cube"));
+                    if ui.button("Add Object").clicked() {
+                        self.Objects.push(Object {
+                            position: self.new_Object.position,
+                            radius: self.new_Object.radius,
+                            color: self.new_Object.color,
+                            roughness: self.new_Object.roughness,
+                            emission: self.new_Object.emission,
+                            is_static:self.new_Object.is_static,
                             velocity: [0.0; 3],
                             acceleration: [0.0; 3],
-                            angular_velocity: [0.0, 0.0, 0.0],
-                            angular_acceleration: [0.0, 0.0, 0.0],
+                            angular_velocity: [0.0;3],
+                            angular_acceleration: [0.0;3],
                             orientation: [1.0, 0.0, 0.0, 0.0],
                             mass: 1.0,
+                            is_cube: self.new_Object.is_cube,
+                            size:[1.0;3],
+                            is_glass: self.new_Object.is_glass,
+                            reflectness: self.new_Object.reflectness,
                         });
-                        self.new_sphere= Sphere {
+                        self.new_Object= Object {
                             position: [0.0; 3],
                             radius: 1.0,
                             color: [120.0; 3],
@@ -191,6 +134,10 @@ pub mod windows{
                             angular_acceleration: [0.0; 3],
                             orientation: [1.0, 0.0, 0.0, 0.0],
                             mass: 1.0,
+                            is_cube: true,
+                            size:[1.0;3],
+                            is_glass: false,
+                            reflectness: 0.0,
                         };
                     }
                 });
@@ -204,6 +151,7 @@ pub mod windows{
                 ui.add(Slider::new(&mut self.skycolor[1], 0.0..=255.0).text("G"));
                 ui.add(Slider::new(&mut self.skycolor[2], 0.0..=255.0).text("B"));
             });
+            ui.add(egui::Checkbox::new(&mut self.is_fisheye, "Fisheye Effect"));
         }
         
     }
@@ -246,10 +194,10 @@ pub mod windows{
                         format!("{GITHUB} Resource Code"),
                         "https://github.com/OmarDevX",
                     );
-                    ui.hyperlink_to(
-                        format!("{TWITTER} @ernerfeldt"),
-                        "https://twitter.com/ernerfeldt",
-                    );
+                    // ui.hyperlink_to(
+                    //     format!("{TWITTER} @ernerfeldt"),
+                    //     "https://twitter.com/ernerfeldt",
+                    // );
                     ui.separator();
                     self.demo_list_ui(ui);
                 });
@@ -265,9 +213,58 @@ pub mod windows{
             egui::ScrollArea::vertical().show(ui, |ui| {
                 ui.with_layout(egui::Layout::top_down_justified(egui::Align::LEFT), |ui| {
                     ui.label("Placeholder");
-                    if ui.button("Sandbox window").clicked() {
+                ui.vertical_centered(|ui| {
+                    ui.label("Objects:");
+                    ui.collapsing("Object List", |ui| {
+                        for (i, object) in self.sandbox_window.Objects.iter_mut().enumerate() {
+                            ui.push_id(i, |ui| {
+                                ui.collapsing(format!("Object {}", i), |ui| {
+                                    // Object Position Sliders
+                                    ui.vertical(|ui| {
+                                        ui.label(format!("Object Position"));
+                                        ui.add(Slider::new(&mut object.position[0], -100.0..=100.0).text("Position X"));
+                                        ui.add(Slider::new(&mut object.position[1], -100.0..=100.0).text("Position Y"));
+                                        ui.add(Slider::new(&mut object.position[2], -100.0..=100.0).text("Position Z"));
+                                    });
+
+                                    // Cube Size Sliders if the object is a cube
+                                    if object.is_cube {
+                                        ui.vertical(|ui| {
+                                            ui.label("Cube Size");
+                                            ui.add(Slider::new(&mut object.size[0], -100.0..=100.0).text("Size X"));
+                                            ui.add(Slider::new(&mut object.size[1], -100.0..=100.0).text("Size Y"));
+                                            ui.add(Slider::new(&mut object.size[2], -100.0..=100.0).text("Size Z"));
+                                        });
+                                    }
+
+                                    // Radius and Color Sliders
+                                    ui.vertical(|ui| {
+                                        ui.label("Object Color");
+                                        ui.add(Slider::new(&mut object.radius, 0.1..=100.0).text("Radius"));
+                                        ui.add(Slider::new(&mut object.color[0], 0.0..=255.0).text("Color R").clamp_to_range(true));
+                                        ui.add(Slider::new(&mut object.color[1], 0.0..=255.0).text("Color G").clamp_to_range(true));
+                                        ui.add(Slider::new(&mut object.color[2], 0.0..=255.0).text("Color B").clamp_to_range(true));
+                                    });
+
+                                    // Roughness and Emission Sliders
+                                    ui.vertical(|ui| {
+                                        ui.label("Object Material");
+                                        ui.add(Slider::new(&mut object.roughness, 0.0..=1.0).text("Roughness").clamp_to_range(true));
+                                        ui.add(Slider::new(&mut object.emission, 0.0..=100.0).text("Emission"));
+                                        ui.add(Slider::new(&mut object.reflectness, 0.0..=100.0).text("reflect"));
+                                    });
+
+                                    // Static Checkbox
+                                    ui.add(egui::Checkbox::new(&mut object.is_static, "Make it Static"));
+                                });
+                            });
+                            ui.separator();
+                        }
+                    });
+                    if ui.button("Add Sphere").clicked() {
                         self.show_sandbox_window = !self.show_sandbox_window;
                     }
+                });
                     if ui.button("Organize windows").clicked() {
                         ui.ctx().memory_mut(|mem| mem.reset_areas());
                     }

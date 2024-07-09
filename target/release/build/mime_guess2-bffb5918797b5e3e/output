@@ -1,0 +1,1 @@
+cargo:rustc-env=MIME_TYPES_GENERATED_PATH=/home/omar/Documents/egui_sdl2_gl/target/release/build/mime_guess2-bffb5918797b5e3e/out/mime_types_generated.rs

@@ -1,0 +1,11 @@
+/home/omar/Documents/egui_sdl2_gl/target/release/build/sdl2-sys-703df8b4189953e2/out/build/CMakeFiles/sdl_headers_copy.dir
+/home/omar/Documents/egui_sdl2_gl/target/release/build/sdl2-sys-703df8b4189953e2/out/build/CMakeFiles/SDL2main.dir
+/home/omar/Documents/egui_sdl2_gl/target/release/build/sdl2-sys-703df8b4189953e2/out/build/CMakeFiles/SDL2.dir
+/home/omar/Documents/egui_sdl2_gl/target/release/build/sdl2-sys-703df8b4189953e2/out/build/CMakeFiles/SDL2_test.dir
+/home/omar/Documents/egui_sdl2_gl/target/release/build/sdl2-sys-703df8b4189953e2/out/build/CMakeFiles/uninstall.dir
+/home/omar/Documents/egui_sdl2_gl/target/release/build/sdl2-sys-703df8b4189953e2/out/build/CMakeFiles/edit_cache.dir
+/home/omar/Documents/egui_sdl2_gl/target/release/build/sdl2-sys-703df8b4189953e2/out/build/CMakeFiles/rebuild_cache.dir
+/home/omar/Documents/egui_sdl2_gl/target/release/build/sdl2-sys-703df8b4189953e2/out/build/CMakeFiles/list_install_components.dir
+/home/omar/Documents/egui_sdl2_gl/target/release/build/sdl2-sys-703df8b4189953e2/out/build/CMakeFiles/install.dir
+/home/omar/Documents/egui_sdl2_gl/target/release/build/sdl2-sys-703df8b4189953e2/out/build/CMakeFiles/install/local.dir
+/home/omar/Documents/egui_sdl2_gl/target/release/build/sdl2-sys-703df8b4189953e2/out/build/CMakeFiles/install/strip.dir

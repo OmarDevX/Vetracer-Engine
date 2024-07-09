@@ -24,8 +24,6 @@ glm = "0.2.3"
 version = "0.17"
 optional = true
 
-
-
 [features]
 default = ["sdl2_bundled"]
 

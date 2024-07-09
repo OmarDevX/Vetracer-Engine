@@ -22,11 +22,12 @@ use egui_sdl2_gl::{self as egui_backend, painter::{compile_shader, link_program}
 use gl::types::*;
 use std::ptr;
 use std::ffi::CString;
-mod sphere;
-use sphere::*;
+mod object;
+use object::*;
 mod window_manager;
 use window_manager::{window_manager::windows::{MainWindow, SandboxWindow}, *};
-
+mod readobj;
+use readobj::*;
 
 
 
@@ -52,7 +53,7 @@ fn main() {
         let last_frame_time: Instant = Instant::now();
     let window = video_subsystem
         .window(
-            "Demo: Egui backend for SDL2 + GL",
+            "Rust Raytracer",
             SCREEN_WIDTH,
             SCREEN_HEIGHT,
         )
@@ -139,9 +140,9 @@ fn main() {
         let timernow: Instant = Instant::now();
         let timer: f32 = timernow.duration_since(last_frame_time).as_secs_f32();
         egui_state.input.time = Some(start_time.elapsed().as_secs_f64());
-        let mut spheres_clone: Vec<Sphere> = main_window.sandbox_window.spheres.clone();
-        for sphere in main_window.sandbox_window.spheres.iter_mut() {
-            sphere.update(delta_time, &mut spheres_clone);
+        let mut objects_clone= main_window.sandbox_window.Objects.clone();
+        for object in main_window.sandbox_window.Objects.iter_mut() {
+            object.update(delta_time, &mut objects_clone);
         }
 
         egui_ctx.begin_frame(egui_state.input.take());
@@ -173,18 +174,35 @@ fn main() {
         main_window.desktop_ui(&egui_ctx);
             
 
-       // Update sphere position in compute shader
+       // Update object position in compute shader
 let camera_pos = my_camera.position;
 let camera_front = my_camera.front;
 let camera_up = my_camera.up;
 let camera_right = my_camera.right;
 let camera_fov = my_camera.fov;
-let spheres_position = main_window.sandbox_window.spheres.clone();
-let sphere_color = spheres_position.iter().map(|s| s.color).collect::<Vec<_>>();
-let sphere_radius = spheres_position.iter().map(|s| s.radius).collect::<Vec<_>>();
-let sphere_roughness = spheres_position.iter().map(|s| s.roughness).collect::<Vec<_>>();
-let sphere_emission = spheres_position.iter().map(|s| s.emission).collect::<Vec<_>>();
+let objects_position = main_window.sandbox_window.Objects.clone();
+let object_color = objects_position.iter().map(|s| s.color).collect::<Vec<_>>();
+let object_radius = objects_position.iter().map(|s| s.radius).collect::<Vec<_>>();
+let object_roughness = objects_position.iter().map(|s| s.roughness).collect::<Vec<_>>();
+let object_emission = objects_position.iter().map(|s| s.emission).collect::<Vec<_>>();
+let object_is_cube = objects_position.iter().map(|s| s.is_cube).collect::<Vec<_>>();
+let object_is_glass = objects_position.iter().map(|s| s.is_glass).collect::<Vec<_>>();
+let object_reflectness = objects_position.iter().map(|s| s.reflectness).collect::<Vec<_>>();
+let (vertices, normals, triangles) = match read_obj_file("triangle.obj") {
+    Ok((vertices, normals, triangles)) => (vertices, normals, triangles),
+    Err(e) => {
+        eprintln!("Error reading OBJ file: {}", e);
+        return;
+    }
+};
+
+let (vertex_data, normal_data, index_data) = prepare_mesh_data(&triangles);
+
+
+let object_size = objects_position.iter().map(|s| s.size).collect::<Vec<_>>();
 let skycolor = main_window.sandbox_window.skycolor;
+let is_fisheye = main_window.sandbox_window.is_fisheye;
+
 // println!("{:?}", materials);
 unsafe {
     gl::UseProgram(compute_shader_program);
@@ -198,26 +216,52 @@ unsafe {
     gl::Uniform3f(camera_right_loc, camera_right[0], camera_right[1], camera_right[2]);
     let camera_fov_loc = gl::GetUniformLocation(compute_shader_program, CString::new("fov").unwrap().as_ptr());
     gl::Uniform1f(camera_fov_loc, camera_fov);
-    let sphere_pos_loc = gl::GetUniformLocation(compute_shader_program, CString::new("spheres_position").unwrap().as_ptr());
-    let sphere_color_loc = gl::GetUniformLocation(compute_shader_program, CString::new("spheres_color").unwrap().as_ptr());
-    let sphere_radius_loc = gl::GetUniformLocation(compute_shader_program, CString::new("spheres_radius").unwrap().as_ptr());
-    let roughness_loc = gl::GetUniformLocation(compute_shader_program, CString::new("spheres_roughness").unwrap().as_ptr());
-    let emission_loc = gl::GetUniformLocation(compute_shader_program, CString::new("spheres_emission").unwrap().as_ptr());
+    let object_pos_loc = gl::GetUniformLocation(compute_shader_program, CString::new("objects_position").unwrap().as_ptr());
+    let object_color_loc = gl::GetUniformLocation(compute_shader_program, CString::new("objects_color").unwrap().as_ptr());
+    let object_radius_loc = gl::GetUniformLocation(compute_shader_program, CString::new("objects_radius").unwrap().as_ptr());
+    let roughness_loc = gl::GetUniformLocation(compute_shader_program, CString::new("objects_roughness").unwrap().as_ptr());
+    let emission_loc = gl::GetUniformLocation(compute_shader_program, CString::new("objects_emission").unwrap().as_ptr());
+    let is_cube_loc = gl::GetUniformLocation(compute_shader_program, CString::new("is_cube").unwrap().as_ptr());
+    let objects_size_loc = gl::GetUniformLocation(compute_shader_program, CString::new("objects_size").unwrap().as_ptr());
+
     let time_loc = gl::GetUniformLocation(compute_shader_program, CString::new("currentTime").unwrap().as_ptr());
     let accumulation_loc = gl::GetUniformLocation(compute_shader_program, CString::new("is_accumulation").unwrap().as_ptr());
+    let is_fisheye_loc = gl::GetUniformLocation(compute_shader_program, CString::new("is_fisheye").unwrap().as_ptr());
     let skycolor_loc = gl::GetUniformLocation(compute_shader_program, CString::new("skycolor").unwrap().as_ptr());
     let camera_vel_loc = gl::GetUniformLocation(compute_shader_program, CString::new("camera_velocity").unwrap().as_ptr());
+    let object_isglass_loc = gl::GetUniformLocation(compute_shader_program, CString::new("is_glass").unwrap().as_ptr());
+    let object_reflectness_loc = gl::GetUniformLocation(compute_shader_program, CString::new("is_glass").unwrap().as_ptr());
+
+    // Mesh
+    let vertices_loc = gl::GetUniformLocation(compute_shader_program, CString::new("vertices").unwrap().as_ptr());
+    let normals_loc = gl::GetUniformLocation(compute_shader_program, CString::new("normals").unwrap().as_ptr());
+    let triangles_loc = gl::GetUniformLocation(compute_shader_program, CString::new("triangles").unwrap().as_ptr());
+
     gl::Uniform1f(time_loc as GLint, timer);
+    gl::Uniform1i(is_fisheye_loc as GLint, is_fisheye as i32);
     gl::Uniform1i(accumulation_loc as GLint, is_accumulate as i32);
     gl::Uniform3f(skycolor_loc as GLint, skycolor[0] as f32 / 255.0, skycolor[1] as f32 / 255.0, skycolor[2] as f32 / 255.0);
     gl::Uniform3f(camera_vel_loc as GLint, my_camera.velocity.x, my_camera.velocity.y, my_camera.velocity.z);
-    for i in 0..spheres_position.len() {
-        gl::Uniform3f(sphere_pos_loc + i as GLint, spheres_position[i].position[0], spheres_position[i].position[1], spheres_position[i].position[2]);
-        gl::Uniform3f(sphere_color_loc + i as GLint, sphere_color[i][0], sphere_color[i][1], sphere_color[i][2]);
-        gl::Uniform1f(sphere_radius_loc + i as GLint, sphere_radius[i]);
-        gl::Uniform1f(roughness_loc + i as GLint, sphere_roughness[i]);
-        gl::Uniform1f(emission_loc + i as GLint, sphere_emission[i]);
+    for i in 0..objects_position.len() {
+            gl::Uniform3f(objects_size_loc +i as GLint, object_size[i][0],object_size[i][1],object_size[i][2]);
+            gl::Uniform1i(is_cube_loc +i as GLint, object_is_cube[i] as i32);
+            gl::Uniform3f(object_pos_loc + i as GLint, objects_position[i].position[0], objects_position[i].position[1], objects_position[i].position[2]);
+            gl::Uniform3f(object_color_loc + i as GLint, object_color[i][0], object_color[i][1], object_color[i][2]);
+            gl::Uniform1f(object_radius_loc + i as GLint, object_radius[i]);
+            gl::Uniform1f(roughness_loc + i as GLint, object_roughness[i]);
+            gl::Uniform1f(object_reflectness_loc + i as GLint, object_reflectness[i]);
+            gl::Uniform1f(emission_loc + i as GLint, object_emission[i]);
+
+            gl::Uniform1i(object_isglass_loc +i as GLint, object_is_glass[i] as i32);
+
     }
+
+        // Upload mesh data (vertices, normals, triangles)
+    // Send mesh data to the shader
+    gl::Uniform3fv(vertices_loc, vertex_data.len() as i32 / 3, vertex_data.as_ptr());
+    gl::Uniform3fv(normals_loc, normal_data.len() as i32 / 3, normal_data.as_ptr());
+    gl::Uniform1iv(triangles_loc, index_data.len() as i32, index_data.as_ptr());
+
     gl::DispatchCompute(SCREEN_WIDTH / 8, SCREEN_HEIGHT / 8, 1);
     gl::MemoryBarrier(gl::SHADER_IMAGE_ACCESS_BARRIER_BIT);
 }

@@ -1,0 +1,927 @@
+CMAKE_TOOLCHAIN_FILE_x86_64-pc-windows-gnu = None
+CMAKE_TOOLCHAIN_FILE_x86_64_pc_windows_gnu = None
+TARGET_CMAKE_TOOLCHAIN_FILE = None
+CMAKE_TOOLCHAIN_FILE = None
+CMAKE_GENERATOR_x86_64-pc-windows-gnu = None
+CMAKE_GENERATOR_x86_64_pc_windows_gnu = None
+TARGET_CMAKE_GENERATOR = None
+CMAKE_GENERATOR = None
+CMAKE_PREFIX_PATH_x86_64-pc-windows-gnu = None
+CMAKE_PREFIX_PATH_x86_64_pc_windows_gnu = None
+TARGET_CMAKE_PREFIX_PATH = None
+CMAKE_PREFIX_PATH = None
+CMAKE_x86_64-pc-windows-gnu = None
+CMAKE_x86_64_pc_windows_gnu = None
+TARGET_CMAKE = None
+CMAKE = None
+running: cd "/home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/build" && CMAKE_PREFIX_PATH="" "cmake" "/home/omar/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sdl2-sys-0.37.0/SDL" "-DCMAKE_RC_COMPILER=/usr/bin/x86_64-w64-mingw32-windres" "-DCMAKE_CONFIGURATION_TYPES=Release" "-DVIDEO_OPENGLES=OFF" "-DSDL_SHARED=ON" "-DSDL_STATIC=OFF" "-DCMAKE_SYSTEM_NAME=Windows" "-DCMAKE_SYSTEM_PROCESSOR=AMD64" "-DCMAKE_INSTALL_PREFIX=/home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out" "-DCMAKE_C_FLAGS= -fcommon -ffunction-sections -fdata-sections -m64" "-DCMAKE_C_COMPILER=/usr/bin/x86_64-w64-mingw32-gcc" "-DCMAKE_CXX_FLAGS= -ffunction-sections -fdata-sections -m64" "-DCMAKE_CXX_COMPILER=/usr/bin/x86_64-w64-mingw32-g++" "-DCMAKE_ASM_FLAGS= -ffunction-sections -fdata-sections -m64" "-DCMAKE_ASM_COMPILER=/usr/bin/x86_64-w64-mingw32-gcc" "-DCMAKE_BUILD_TYPE=Release"
+-- The C compiler identification is GNU 13.0.0
+-- The CXX compiler identification is GNU 13.0.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/x86_64-w64-mingw32-gcc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/x86_64-w64-mingw32-g++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found PkgConfig: /usr/bin/pkg-config (found version "1.8.1") 
+-- Looking for __GLIBC__
+-- Looking for __GLIBC__ - not found
+-- Performing Test HAVE_GCC_WALL
+-- Performing Test HAVE_GCC_WALL - Success
+-- Performing Test HAVE_GCC_NO_STRICT_ALIASING
+-- Performing Test HAVE_GCC_NO_STRICT_ALIASING - Success
+-- Performing Test HAVE_GCC_WDECLARATION_AFTER_STATEMENT
+-- Performing Test HAVE_GCC_WDECLARATION_AFTER_STATEMENT - Success
+-- Performing Test HAVE_GCC_ATOMICS
+-- Performing Test HAVE_GCC_ATOMICS - Success
+-- Performing Test HAVE_GCC_PREFERRED_STACK_BOUNDARY
+-- Performing Test HAVE_GCC_PREFERRED_STACK_BOUNDARY - Failed
+-- Performing Test HAVE_GCC_FVISIBILITY
+-- Performing Test HAVE_GCC_FVISIBILITY - Success
+-- Performing Test HAVE_GCC_WSHADOW
+-- Performing Test HAVE_GCC_WSHADOW - Success
+-- Performing Test HAVE_NO_UNDEFINED
+-- Performing Test HAVE_NO_UNDEFINED - Success
+-- Performing Test HAVE_GDWARF_4
+-- Performing Test HAVE_GDWARF_4 - Success
+-- Performing Test HAVE_MMX
+-- Performing Test HAVE_MMX - Success
+-- Performing Test HAVE_3DNOW
+-- Performing Test HAVE_3DNOW - Success
+-- Performing Test HAVE_SSE
+-- Performing Test HAVE_SSE - Success
+-- Performing Test HAVE_SSE2
+-- Performing Test HAVE_SSE2 - Success
+-- Performing Test HAVE_SSE3
+-- Performing Test HAVE_SSE3 - Success
+-- Looking for immintrin.h
+-- Looking for immintrin.h - found
+-- Performing Test HAVE_ALTIVEC_H_HDR
+-- Performing Test HAVE_ALTIVEC_H_HDR - Failed
+-- Performing Test HAVE_ALTIVEC
+-- Performing Test HAVE_ALTIVEC - Failed
+-- Looking for ctype.h
+-- Looking for ctype.h - found
+-- Looking for float.h
+-- Looking for float.h - found
+-- Looking for iconv.h
+-- Looking for iconv.h - not found
+-- Looking for inttypes.h
+-- Looking for inttypes.h - found
+-- Looking for limits.h
+-- Looking for limits.h - found
+-- Looking for malloc.h
+-- Looking for malloc.h - found
+-- Looking for math.h
+-- Looking for math.h - found
+-- Looking for memory.h
+-- Looking for memory.h - found
+-- Looking for signal.h
+-- Looking for signal.h - found
+-- Looking for stdarg.h
+-- Looking for stdarg.h - found
+-- Looking for stddef.h
+-- Looking for stddef.h - found
+-- Looking for stdint.h
+-- Looking for stdint.h - found
+-- Looking for stdio.h
+-- Looking for stdio.h - found
+-- Looking for stdlib.h
+-- Looking for stdlib.h - found
+-- Looking for string.h
+-- Looking for string.h - found
+-- Looking for strings.h
+-- Looking for strings.h - found
+-- Looking for sys/types.h
+-- Looking for sys/types.h - found
+-- Looking for wchar.h
+-- Looking for wchar.h - found
+-- Looking for libunwind.h
+-- Looking for libunwind.h - not found
+-- Looking for linux/input.h
+-- Looking for linux/input.h - not found
+-- Looking for 7 include files stddef.h, ..., float.h
+-- Looking for 7 include files stddef.h, ..., float.h - found
+-- Looking for M_PI
+-- Looking for M_PI - found
+-- Performing Test HAVE_MPROTECT
+-- Performing Test HAVE_MPROTECT - Failed
+-- Looking for strtod
+-- Looking for strtod - found
+-- Looking for malloc
+-- Looking for malloc - found
+-- Looking for calloc
+-- Looking for calloc - found
+-- Looking for realloc
+-- Looking for realloc - found
+-- Looking for free
+-- Looking for free - found
+-- Looking for getenv
+-- Looking for getenv - found
+-- Looking for setenv
+-- Looking for setenv - not found
+-- Looking for putenv
+-- Looking for putenv - found
+-- Looking for unsetenv
+-- Looking for unsetenv - not found
+-- Looking for bsearch
+-- Looking for bsearch - found
+-- Looking for qsort
+-- Looking for qsort - found
+-- Looking for abs
+-- Looking for abs - found
+-- Looking for bcopy
+-- Looking for bcopy - not found
+-- Looking for memset
+-- Looking for memset - found
+-- Looking for memcpy
+-- Looking for memcpy - found
+-- Looking for memmove
+-- Looking for memmove - found
+-- Looking for memcmp
+-- Looking for memcmp - found
+-- Looking for strlen
+-- Looking for strlen - found
+-- Looking for strlcpy
+-- Looking for strlcpy - not found
+-- Looking for strlcat
+-- Looking for strlcat - not found
+-- Looking for _strrev
+-- Looking for _strrev - found
+-- Looking for _strupr
+-- Looking for _strupr - found
+-- Looking for _strlwr
+-- Looking for _strlwr - found
+-- Looking for index
+-- Looking for index - not found
+-- Looking for rindex
+-- Looking for rindex - not found
+-- Looking for strchr
+-- Looking for strchr - found
+-- Looking for strrchr
+-- Looking for strrchr - found
+-- Looking for strstr
+-- Looking for strstr - found
+-- Looking for strtok_r
+-- Looking for strtok_r - found
+-- Looking for itoa
+-- Looking for itoa - found
+-- Looking for _ltoa
+-- Looking for _ltoa - found
+-- Looking for _uitoa
+-- Looking for _uitoa - not found
+-- Looking for _ultoa
+-- Looking for _ultoa - found
+-- Looking for strtol
+-- Looking for strtol - found
+-- Looking for strtoul
+-- Looking for strtoul - found
+-- Looking for _i64toa
+-- Looking for _i64toa - found
+-- Looking for _ui64toa
+-- Looking for _ui64toa - found
+-- Looking for strtoll
+-- Looking for strtoll - found
+-- Looking for strtoull
+-- Looking for strtoull - found
+-- Looking for atoi
+-- Looking for atoi - found
+-- Looking for atof
+-- Looking for atof - found
+-- Looking for strcmp
+-- Looking for strcmp - found
+-- Looking for strncmp
+-- Looking for strncmp - found
+-- Looking for _stricmp
+-- Looking for _stricmp - found
+-- Looking for strcasecmp
+-- Looking for strcasecmp - found
+-- Looking for _strnicmp
+-- Looking for _strnicmp - found
+-- Looking for strncasecmp
+-- Looking for strncasecmp - found
+-- Looking for strcasestr
+-- Looking for strcasestr - not found
+-- Looking for wcscmp
+-- Looking for wcscmp - found
+-- Looking for _wcsdup
+-- Looking for _wcsdup - found
+-- Looking for wcsdup
+-- Looking for wcsdup - found
+-- Looking for wcslcat
+-- Looking for wcslcat - not found
+-- Looking for wcslcpy
+-- Looking for wcslcpy - not found
+-- Looking for wcslen
+-- Looking for wcslen - found
+-- Looking for wcsncmp
+-- Looking for wcsncmp - found
+-- Looking for wcsstr
+-- Looking for wcsstr - found
+-- Looking for wcscasecmp
+-- Looking for wcscasecmp - not found
+-- Looking for _wcsicmp
+-- Looking for _wcsicmp - found
+-- Looking for wcsncasecmp
+-- Looking for wcsncasecmp - not found
+-- Looking for _wcsnicmp
+-- Looking for _wcsnicmp - found
+-- Looking for sscanf
+-- Looking for sscanf - found
+-- Looking for vsscanf
+-- Looking for vsscanf - found
+-- Looking for vsnprintf
+-- Looking for vsnprintf - found
+-- Looking for fopen64
+-- Looking for fopen64 - found
+-- Looking for fseeko
+-- Looking for fseeko - found
+-- Looking for fseeko64
+-- Looking for fseeko64 - found
+-- Looking for _Exit
+-- Looking for _Exit - found
+-- Looking for sigaction
+-- Looking for sigaction - not found
+-- Looking for setjmp
+-- Looking for setjmp - found
+-- Looking for nanosleep
+-- Looking for nanosleep - not found
+-- Looking for sysconf
+-- Looking for sysconf - not found
+-- Looking for sysctlbyname
+-- Looking for sysctlbyname - not found
+-- Looking for getauxval
+-- Looking for getauxval - not found
+-- Looking for elf_aux_info
+-- Looking for elf_aux_info - not found
+-- Looking for poll
+-- Looking for poll - not found
+-- Looking for pow in m
+-- Looking for pow in m - found
+-- Looking for atan
+-- Looking for atan - found
+-- Looking for atan2
+-- Looking for atan2 - found
+-- Looking for atanf
+-- Looking for atanf - found
+-- Looking for atan2f
+-- Looking for atan2f - found
+-- Looking for ceil
+-- Looking for ceil - found
+-- Looking for ceilf
+-- Looking for ceilf - found
+-- Looking for copysign
+-- Looking for copysign - found
+-- Looking for copysignf
+-- Looking for copysignf - found
+-- Looking for cos
+-- Looking for cos - found
+-- Looking for cosf
+-- Looking for cosf - found
+-- Looking for exp
+-- Looking for exp - found
+-- Looking for expf
+-- Looking for expf - found
+-- Looking for fabs
+-- Looking for fabs - found
+-- Looking for fabsf
+-- Looking for fabsf - found
+-- Looking for floor
+-- Looking for floor - found
+-- Looking for floorf
+-- Looking for floorf - found
+-- Looking for fmod
+-- Looking for fmod - found
+-- Looking for fmodf
+-- Looking for fmodf - found
+-- Looking for log
+-- Looking for log - found
+-- Looking for logf
+-- Looking for logf - found
+-- Looking for log10
+-- Looking for log10 - found
+-- Looking for log10f
+-- Looking for log10f - found
+-- Looking for lround
+-- Looking for lround - found
+-- Looking for lroundf
+-- Looking for lroundf - found
+-- Looking for pow
+-- Looking for pow - found
+-- Looking for powf
+-- Looking for powf - found
+-- Looking for round
+-- Looking for round - found
+-- Looking for roundf
+-- Looking for roundf - found
+-- Looking for scalbn
+-- Looking for scalbn - found
+-- Looking for scalbnf
+-- Looking for scalbnf - found
+-- Looking for sin
+-- Looking for sin - found
+-- Looking for sinf
+-- Looking for sinf - found
+-- Looking for sqrt
+-- Looking for sqrt - found
+-- Looking for sqrtf
+-- Looking for sqrtf - found
+-- Looking for tan
+-- Looking for tan - found
+-- Looking for tanf
+-- Looking for tanf - found
+-- Looking for acos
+-- Looking for acos - found
+-- Looking for acosf
+-- Looking for acosf - found
+-- Looking for asin
+-- Looking for asin - found
+-- Looking for asinf
+-- Looking for asinf - found
+-- Looking for trunc
+-- Looking for trunc - found
+-- Looking for truncf
+-- Looking for truncf - found
+-- Looking for iconv_open in iconv
+-- Looking for iconv_open in iconv - not found
+-- Looking for iconv_open in c
+-- Looking for iconv_open in c - not found
+-- Looking for alloca.h
+-- Looking for alloca.h - not found
+-- Looking for alloca
+-- Looking for alloca - not found
+-- Looking for alloca
+-- Looking for alloca - found
+-- Looking for alloca
+-- Looking for alloca - found
+-- Performing Test HAVE_SA_SIGACTION
+-- Performing Test HAVE_SA_SIGACTION - Failed
+-- Performing Test HAVE_WIN32_CC
+-- Performing Test HAVE_WIN32_CC - Success
+-- Looking for d3d9.h
+-- Looking for d3d9.h - found
+-- Looking for d3d11_1.h
+-- Looking for d3d11_1.h - found
+-- Performing Test HAVE_D3D12_H
+-- Performing Test HAVE_D3D12_H - Success
+-- Looking for ddraw.h
+-- Looking for ddraw.h - found
+-- Looking for dsound.h
+-- Looking for dsound.h - found
+-- Looking for dinput.h
+-- Looking for dinput.h - found
+-- Looking for dxgi.h
+-- Looking for dxgi.h - found
+-- Performing Test HAVE_XINPUT_H
+-- Performing Test HAVE_XINPUT_H - Success
+-- Performing Test HAVE_XINPUT_GAMEPAD_EX
+-- Performing Test HAVE_XINPUT_GAMEPAD_EX - Failed
+-- Performing Test HAVE_XINPUT_STATE_EX
+-- Performing Test HAVE_XINPUT_STATE_EX - Failed
+-- Performing Test HAVE_WINDOWS_GAMING_INPUT_H
+-- Performing Test HAVE_WINDOWS_GAMING_INPUT_H - Success
+-- Looking for tpcshrd.h
+-- Looking for tpcshrd.h - found
+-- Looking for roapi.h
+-- Looking for roapi.h - found
+-- Looking for mmdeviceapi.h
+-- Looking for mmdeviceapi.h - found
+-- Looking for audioclient.h
+-- Looking for audioclient.h - found
+-- Looking for sensorsapi.h
+-- Looking for sensorsapi.h - found
+-- Looking for shellscalingapi.h
+-- Looking for shellscalingapi.h - found
+-- Found Git: /usr/bin/git (found version "2.43.0") 
+-- 
+-- SDL2 was configured with the following options:
+-- 
+-- Platform: Windows
+-- 64-bit:   TRUE
+-- Compiler: /usr/bin/x86_64-w64-mingw32-gcc
+-- Revision: SDL-2.26.4-no-vcs
+-- 
+-- Subsystems:
+--   Atomic:	ON
+--   Audio:	ON
+--   Video:	ON
+--   Render:	ON
+--   Events:	ON
+--   Joystick:	ON
+--   Haptic:	ON
+--   Hidapi:	ON
+--   Power:	ON
+--   Threads:	ON
+--   Timers:	ON
+--   File:	ON
+--   Loadso:	ON
+--   CPUinfo:	ON
+--   Filesystem:	ON
+--   Sensor:	ON
+--   Locale:	ON
+--   Misc:	ON
+-- 
+-- Options:
+--   SDL2_DISABLE_INSTALL        (Wanted: OFF): OFF
+--   SDL2_DISABLE_SDL2MAIN       (Wanted: OFF): OFF
+--   SDL2_DISABLE_UNINSTALL      (Wanted: OFF): OFF
+--   SDL_3DNOW                   (Wanted: ON): ON
+--   SDL_ALSA                    (Wanted: OFF): OFF
+--   SDL_ALSA_SHARED             (Wanted: OFF): OFF
+--   SDL_ALTIVEC                 (Wanted: ON): OFF
+--   SDL_ARMNEON                 (Wanted: OFF): OFF
+--   SDL_ARMSIMD                 (Wanted: OFF): OFF
+--   SDL_ARTS                    (Wanted: OFF): OFF
+--   SDL_ARTS_SHARED             (Wanted: OFF): OFF
+--   SDL_ASAN                    (Wanted: OFF): OFF
+--   SDL_ASSEMBLY                (Wanted: ON): ON
+--   SDL_ASSERTIONS              (Wanted: auto): auto
+--   SDL_BACKGROUNDING_SIGNAL    (Wanted: OFF): OFF
+--   SDL_CCACHE                  (Wanted: ON): ON
+--   SDL_CLOCK_GETTIME           (Wanted: OFF): OFF
+--   SDL_COCOA                   (Wanted: OFF): OFF
+--   SDL_DBUS                    (Wanted: OFF): OFF
+--   SDL_DIRECTFB                (Wanted: OFF): OFF
+--   SDL_DIRECTFB_SHARED         (Wanted: OFF): OFF
+--   SDL_DIRECTX                 (Wanted: ON): ON
+--   SDL_DISKAUDIO               (Wanted: ON): ON
+--   SDL_DUMMYAUDIO              (Wanted: ON): ON
+--   SDL_DUMMYVIDEO              (Wanted: ON): ON
+--   SDL_ESD                     (Wanted: OFF): OFF
+--   SDL_ESD_SHARED              (Wanted: OFF): OFF
+--   SDL_FOREGROUNDING_SIGNAL    (Wanted: OFF): OFF
+--   SDL_FUSIONSOUND             (Wanted: OFF): OFF
+--   SDL_FUSIONSOUND_SHARED      (Wanted: OFF): OFF
+--   SDL_GCC_ATOMICS             (Wanted: ON): ON
+--   SDL_HIDAPI                  (Wanted: ON): ON
+--   SDL_HIDAPI_JOYSTICK         (Wanted: ON): ON
+--   SDL_HIDAPI_LIBUSB           (Wanted: OFF): OFF
+--   SDL_IBUS                    (Wanted: OFF): OFF
+--   SDL_INSTALL_TESTS           (Wanted: OFF): OFF
+--   SDL_JACK                    (Wanted: OFF): OFF
+--   SDL_JACK_SHARED             (Wanted: OFF): OFF
+--   SDL_KMSDRM                  (Wanted: OFF): OFF
+--   SDL_KMSDRM_SHARED           (Wanted: OFF): OFF
+--   SDL_LIBC                    (Wanted: ON): ON
+--   SDL_LIBSAMPLERATE           (Wanted: OFF): OFF
+--   SDL_LIBSAMPLERATE_SHARED    (Wanted: OFF): OFF
+--   SDL_METAL                   (Wanted: OFF): OFF
+--   SDL_MMX                     (Wanted: ON): ON
+--   SDL_NAS                     (Wanted: OFF): OFF
+--   SDL_NAS_SHARED              (Wanted: OFF): OFF
+--   SDL_OFFSCREEN               (Wanted: ON): ON
+--   SDL_OPENGL                  (Wanted: ON): ON
+--   SDL_OPENGLES                (Wanted: ON): ON
+--   SDL_OSS                     (Wanted: OFF): OFF
+--   SDL_PIPEWIRE                (Wanted: OFF): OFF
+--   SDL_PIPEWIRE_SHARED         (Wanted: OFF): OFF
+--   SDL_PTHREADS                (Wanted: OFF): OFF
+--   SDL_PTHREADS_SEM            (Wanted: OFF): OFF
+--   SDL_PULSEAUDIO              (Wanted: OFF): OFF
+--   SDL_PULSEAUDIO_SHARED       (Wanted: OFF): OFF
+--   SDL_RENDER_D3D              (Wanted: ON): ON
+--   SDL_RENDER_METAL            (Wanted: OFF): OFF
+--   SDL_RPATH                   (Wanted: OFF): OFF
+--   SDL_RPI                     (Wanted: OFF): OFF
+--   SDL_SNDIO                   (Wanted: OFF): OFF
+--   SDL_SNDIO_SHARED            (Wanted: OFF): OFF
+--   SDL_SSE                     (Wanted: ON): ON
+--   SDL_SSE2                    (Wanted: ON): ON
+--   SDL_SSE3                    (Wanted: ON): ON
+--   SDL_SSEMATH                 (Wanted: ON): ON
+--   SDL_STATIC_PIC              (Wanted: OFF): OFF
+--   SDL_SYSTEM_ICONV            (Wanted: ON): OFF
+--   SDL_TESTS                   (Wanted: OFF): OFF
+--   SDL_VENDOR_INFO             (Wanted: ): OFF
+--   SDL_VIRTUAL_JOYSTICK        (Wanted: ON): ON
+--   SDL_VIVANTE                 (Wanted: OFF): OFF
+--   SDL_VULKAN                  (Wanted: ON): ON
+--   SDL_WASAPI                  (Wanted: ON): ON
+--   SDL_WAYLAND                 (Wanted: OFF): OFF
+--   SDL_WAYLAND_LIBDECOR        (Wanted: OFF): OFF
+--   SDL_WAYLAND_LIBDECOR_SHARED (Wanted: OFF): OFF
+--   SDL_WAYLAND_QT_TOUCH        (Wanted: OFF): OFF
+--   SDL_WAYLAND_SHARED          (Wanted: OFF): OFF
+--   SDL_X11                     (Wanted: OFF): OFF
+--   SDL_X11_SHARED              (Wanted: OFF): OFF
+--   SDL_X11_XCURSOR             (Wanted: OFF): OFF
+--   SDL_X11_XDBE                (Wanted: OFF): OFF
+--   SDL_X11_XFIXES              (Wanted: OFF): OFF
+--   SDL_X11_XINPUT              (Wanted: OFF): OFF
+--   SDL_X11_XRANDR              (Wanted: OFF): OFF
+--   SDL_X11_XSCRNSAVER          (Wanted: OFF): OFF
+--   SDL_X11_XSHAPE              (Wanted: OFF): OFF
+--   SDL_XINPUT                  (Wanted: ON): ON
+-- 
+--  CFLAGS:         -fcommon -ffunction-sections -fdata-sections -m64 -idirafter "/home/omar/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sdl2-sys-0.37.0/SDL/src/video/khronos"
+--  EXTRA_CFLAGS:   -Wall -fno-strict-aliasing -Wdeclaration-after-statement -fvisibility=hidden -Wshadow -mmmx -m3dnow -msse -msse2 -msse3
+--  EXTRA_LDFLAGS:  -Wl,--no-undefined
+--  EXTRA_LIBS:    m;user32;gdi32;winmm;imm32;ole32;oleaut32;version;uuid;advapi32;setupapi;shell32;dinput8
+-- 
+--  Build Shared Library: ON
+--  Build Static Library: OFF
+-- 
+-- Configuring done (50.6s)
+-- Generating done (0.0s)
+-- Build files have been written to: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/build
+running: cd "/home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/build" && MAKEFLAGS="-j --jobserver-fds=8,10 --jobserver-auth=8,10" "cmake" "--build" "." "--target" "install" "--config" "Release"
+[  1%] Generating include/SDL_assert.h
+[  1%] Generating include/SDL_audio.h
+[  1%] Generating include/SDL.h
+[  1%] Generating include/SDL_atomic.h
+[  2%] Generating include/SDL_bits.h
+[  2%] Generating include/SDL_blendmode.h
+[  3%] Generating include/SDL_egl.h
+[  3%] Generating include/SDL_clipboard.h
+[  3%] Generating include/SDL_copying.h
+[  3%] Generating include/SDL_cpuinfo.h
+[  4%] Generating include/SDL_error.h
+[  4%] Generating include/SDL_endian.h
+[  4%] Generating include/SDL_events.h
+[  5%] Generating include/SDL_filesystem.h
+[  5%] Generating include/SDL_gesture.h
+[  5%] Generating include/SDL_gamecontroller.h
+[  6%] Generating include/SDL_guid.h
+[  6%] Generating include/SDL_haptic.h
+[  7%] Generating include/SDL_hidapi.h
+[  7%] Generating include/SDL_hints.h
+[  8%] Generating include/SDL_joystick.h
+[  8%] Generating include/SDL_keyboard.h
+[  8%] Generating include/SDL_keycode.h
+[  8%] Generating include/SDL_loadso.h
+[  9%] Generating include/SDL_main.h
+[  9%] Generating include/SDL_locale.h
+[  9%] Generating include/SDL_log.h
+[ 10%] Generating include/SDL_messagebox.h
+[ 10%] Generating include/SDL_metal.h
+[ 11%] Generating include/SDL_mouse.h
+[ 11%] Generating include/SDL_misc.h
+[ 11%] Generating include/SDL_mutex.h
+[ 11%] Generating include/SDL_name.h
+[ 12%] Generating include/SDL_opengl.h
+[ 12%] Generating include/SDL_opengl_glext.h
+[ 13%] Generating include/SDL_opengles2_gl2.h
+[ 13%] Generating include/SDL_opengles.h
+[ 13%] Generating include/SDL_opengles2.h
+[ 13%] Generating include/SDL_opengles2_gl2ext.h
+[ 14%] Generating include/SDL_opengles2_gl2platform.h
+[ 14%] Generating include/SDL_opengles2_khrplatform.h
+[ 14%] Generating include/SDL_pixels.h
+[ 15%] Generating include/SDL_quit.h
+[ 15%] Generating include/SDL_power.h
+[ 15%] Generating include/SDL_platform.h
+[ 16%] Generating include/SDL_rect.h
+[ 17%] Generating include/SDL_rwops.h
+[ 17%] Generating include/SDL_render.h
+[ 17%] Generating include/SDL_scancode.h
+[ 17%] Generating include/SDL_sensor.h
+[ 18%] Generating include/SDL_shape.h
+[ 18%] Generating include/SDL_stdinc.h
+[ 18%] Generating include/SDL_surface.h
+[ 19%] Generating include/SDL_system.h
+[ 19%] Generating include/SDL_syswm.h
+[ 19%] Generating include/SDL_test.h
+[ 20%] Generating include/SDL_test_assert.h
+[ 20%] Generating include/SDL_test_common.h
+[ 20%] Generating include/SDL_test_compare.h
+[ 21%] Generating include/SDL_test_crc32.h
+[ 21%] Generating include/SDL_test_font.h
+[ 21%] Generating include/SDL_test_fuzzer.h
+[ 23%] Generating include/SDL_test_md5.h
+[ 23%] Generating include/SDL_test_harness.h
+[ 23%] Generating include/SDL_test_images.h
+[ 23%] Generating include/SDL_test_log.h
+[ 23%] Generating include/SDL_test_memory.h
+[ 23%] Generating include/SDL_test_random.h
+[ 24%] Generating include/SDL_timer.h
+[ 24%] Generating include/SDL_thread.h
+[ 24%] Generating include/SDL_touch.h
+[ 24%] Generating include/SDL_version.h
+[ 25%] Generating include/SDL_types.h
+[ 25%] Generating include/SDL_video.h
+[ 26%] Generating include/SDL_vulkan.h
+[ 26%] Generating include/begin_code.h
+[ 27%] Generating include/close_code.h
+[ 27%] Built target sdl_headers_copy
+[ 29%] Building C object CMakeFiles/SDL2_test.dir/src/test/SDL_test_assert.c.obj
+[ 29%] Building C object CMakeFiles/SDL2main.dir/src/main/windows/SDL_windows_main.c.obj
+[ 29%] Building C object CMakeFiles/SDL2_test.dir/src/test/SDL_test_compare.c.obj
+[ 29%] Building C object CMakeFiles/SDL2_test.dir/src/test/SDL_test_common.c.obj
+[ 30%] Building C object CMakeFiles/SDL2_test.dir/src/test/SDL_test_crc32.c.obj
+[ 30%] Building C object CMakeFiles/SDL2.dir/src/SDL.c.obj
+[ 30%] Building C object CMakeFiles/SDL2_test.dir/src/test/SDL_test_font.c.obj
+[ 30%] Linking C static library libSDL2main.a
+[ 30%] Building C object CMakeFiles/SDL2.dir/src/SDL_assert.c.obj
+[ 31%] Building C object CMakeFiles/SDL2.dir/src/SDL_dataqueue.c.obj
+[ 31%] Building C object CMakeFiles/SDL2_test.dir/src/test/SDL_test_fuzzer.c.obj
+[ 31%] Building C object CMakeFiles/SDL2.dir/src/SDL_error.c.obj
+[ 31%] Built target SDL2main
+[ 31%] Building C object CMakeFiles/SDL2.dir/src/SDL_guid.c.obj
+[ 32%] Building C object CMakeFiles/SDL2.dir/src/SDL_hints.c.obj
+[ 32%] Building C object CMakeFiles/SDL2.dir/src/SDL_list.c.obj
+[ 32%] Building C object CMakeFiles/SDL2.dir/src/SDL_log.c.obj
+[ 33%] Building C object CMakeFiles/SDL2.dir/src/SDL_utils.c.obj
+[ 34%] Building C object CMakeFiles/SDL2_test.dir/src/test/SDL_test_harness.c.obj
+[ 34%] Building C object CMakeFiles/SDL2.dir/src/atomic/SDL_atomic.c.obj
+[ 34%] Building C object CMakeFiles/SDL2.dir/src/atomic/SDL_spinlock.c.obj
+[ 34%] Building C object CMakeFiles/SDL2_test.dir/src/test/SDL_test_imageBlit.c.obj
+[ 35%] Building C object CMakeFiles/SDL2.dir/src/audio/SDL_audio.c.obj
+[ 36%] Building C object CMakeFiles/SDL2_test.dir/src/test/SDL_test_imageBlitBlend.c.obj
+[ 36%] Building C object CMakeFiles/SDL2.dir/src/audio/SDL_audiocvt.c.obj
+[ 36%] Building C object CMakeFiles/SDL2.dir/src/audio/SDL_audiodev.c.obj
+[ 36%] Building C object CMakeFiles/SDL2_test.dir/src/test/SDL_test_imageFace.c.obj
+[ 37%] Building C object CMakeFiles/SDL2.dir/src/audio/SDL_audiotypecvt.c.obj
+[ 37%] Building C object CMakeFiles/SDL2_test.dir/src/test/SDL_test_imagePrimitives.c.obj
+[ 38%] Building C object CMakeFiles/SDL2_test.dir/src/test/SDL_test_imagePrimitivesBlend.c.obj
+[ 38%] Building C object CMakeFiles/SDL2.dir/src/audio/SDL_mixer.c.obj
+[ 38%] Building C object CMakeFiles/SDL2.dir/src/audio/SDL_wave.c.obj
+[ 38%] Building C object CMakeFiles/SDL2_test.dir/src/test/SDL_test_log.c.obj
+[ 38%] Building C object CMakeFiles/SDL2_test.dir/src/test/SDL_test_md5.c.obj
+[ 39%] Building C object CMakeFiles/SDL2_test.dir/src/test/SDL_test_memory.c.obj
+[ 39%] Building C object CMakeFiles/SDL2_test.dir/src/test/SDL_test_random.c.obj
+[ 40%] Building C object CMakeFiles/SDL2.dir/src/cpuinfo/SDL_cpuinfo.c.obj
+[ 40%] Building C object CMakeFiles/SDL2.dir/src/dynapi/SDL_dynapi.c.obj
+[ 40%] Building C object CMakeFiles/SDL2.dir/src/events/SDL_clipboardevents.c.obj
+[ 41%] Building C object CMakeFiles/SDL2.dir/src/events/SDL_displayevents.c.obj
+[ 41%] Building C object CMakeFiles/SDL2.dir/src/events/SDL_dropevents.c.obj
+[ 41%] Linking C static library libSDL2_test.a
+[ 41%] Built target SDL2_test
+[ 41%] Building C object CMakeFiles/SDL2.dir/src/events/SDL_events.c.obj
+[ 42%] Building C object CMakeFiles/SDL2.dir/src/events/SDL_gesture.c.obj
+[ 42%] Building C object CMakeFiles/SDL2.dir/src/events/SDL_keyboard.c.obj
+[ 42%] Building C object CMakeFiles/SDL2.dir/src/events/SDL_keysym_to_scancode.c.obj
+[ 43%] Building C object CMakeFiles/SDL2.dir/src/events/SDL_mouse.c.obj
+[ 43%] Building C object CMakeFiles/SDL2.dir/src/events/SDL_quit.c.obj
+[ 44%] Building C object CMakeFiles/SDL2.dir/src/events/SDL_scancode_tables.c.obj
+[ 44%] Building C object CMakeFiles/SDL2.dir/src/events/SDL_touch.c.obj
+[ 44%] Building C object CMakeFiles/SDL2.dir/src/events/SDL_windowevents.c.obj
+[ 45%] Building C object CMakeFiles/SDL2.dir/src/events/imKStoUCS.c.obj
+[ 45%] Building C object CMakeFiles/SDL2.dir/src/file/SDL_rwops.c.obj
+[ 45%] Building C object CMakeFiles/SDL2.dir/src/haptic/SDL_haptic.c.obj
+[ 46%] Building C object CMakeFiles/SDL2.dir/src/hidapi/SDL_hidapi.c.obj
+[ 46%] Building C object CMakeFiles/SDL2.dir/src/joystick/SDL_gamecontroller.c.obj
+[ 46%] Building C object CMakeFiles/SDL2.dir/src/joystick/SDL_joystick.c.obj
+[ 47%] Building C object CMakeFiles/SDL2.dir/src/joystick/controller_type.c.obj
+[ 47%] Building C object CMakeFiles/SDL2.dir/src/libm/e_atan2.c.obj
+[ 47%] Building C object CMakeFiles/SDL2.dir/src/libm/e_exp.c.obj
+[ 48%] Building C object CMakeFiles/SDL2.dir/src/libm/e_fmod.c.obj
+[ 48%] Building C object CMakeFiles/SDL2.dir/src/libm/e_log.c.obj
+[ 48%] Building C object CMakeFiles/SDL2.dir/src/libm/e_log10.c.obj
+[ 49%] Building C object CMakeFiles/SDL2.dir/src/libm/e_rem_pio2.c.obj
+[ 49%] Building C object CMakeFiles/SDL2.dir/src/libm/e_pow.c.obj
+[ 49%] Building C object CMakeFiles/SDL2.dir/src/libm/e_sqrt.c.obj
+[ 50%] Building C object CMakeFiles/SDL2.dir/src/libm/k_cos.c.obj
+[ 50%] Building C object CMakeFiles/SDL2.dir/src/libm/k_rem_pio2.c.obj
+[ 50%] Building C object CMakeFiles/SDL2.dir/src/libm/k_sin.c.obj
+[ 51%] Building C object CMakeFiles/SDL2.dir/src/libm/k_tan.c.obj
+[ 51%] Building C object CMakeFiles/SDL2.dir/src/libm/s_atan.c.obj
+[ 51%] Building C object CMakeFiles/SDL2.dir/src/libm/s_copysign.c.obj
+[ 52%] Building C object CMakeFiles/SDL2.dir/src/libm/s_cos.c.obj
+[ 52%] Building C object CMakeFiles/SDL2.dir/src/libm/s_fabs.c.obj
+[ 52%] Building C object CMakeFiles/SDL2.dir/src/libm/s_floor.c.obj
+[ 53%] Building C object CMakeFiles/SDL2.dir/src/libm/s_scalbn.c.obj
+[ 53%] Building C object CMakeFiles/SDL2.dir/src/libm/s_sin.c.obj
+[ 54%] Building C object CMakeFiles/SDL2.dir/src/libm/s_tan.c.obj
+[ 54%] Building C object CMakeFiles/SDL2.dir/src/locale/SDL_locale.c.obj
+[ 54%] Building C object CMakeFiles/SDL2.dir/src/misc/SDL_url.c.obj
+[ 55%] Building C object CMakeFiles/SDL2.dir/src/power/SDL_power.c.obj
+[ 55%] Building C object CMakeFiles/SDL2.dir/src/render/SDL_d3dmath.c.obj
+[ 55%] Building C object CMakeFiles/SDL2.dir/src/render/SDL_render.c.obj
+[ 56%] Building C object CMakeFiles/SDL2.dir/src/render/SDL_yuv_sw.c.obj
+[ 56%] Building C object CMakeFiles/SDL2.dir/src/render/direct3d/SDL_render_d3d.c.obj
+[ 56%] Building C object CMakeFiles/SDL2.dir/src/render/direct3d/SDL_shaders_d3d.c.obj
+[ 57%] Building C object CMakeFiles/SDL2.dir/src/render/direct3d11/SDL_render_d3d11.c.obj
+[ 57%] Building C object CMakeFiles/SDL2.dir/src/render/direct3d11/SDL_shaders_d3d11.c.obj
+[ 57%] Building C object CMakeFiles/SDL2.dir/src/render/direct3d12/SDL_render_d3d12.c.obj
+[ 58%] Building C object CMakeFiles/SDL2.dir/src/render/direct3d12/SDL_shaders_d3d12.c.obj
+[ 58%] Building C object CMakeFiles/SDL2.dir/src/render/opengl/SDL_render_gl.c.obj
+[ 58%] Building C object CMakeFiles/SDL2.dir/src/render/opengl/SDL_shaders_gl.c.obj
+[ 59%] Building C object CMakeFiles/SDL2.dir/src/render/opengles/SDL_render_gles.c.obj
+[ 59%] Building C object CMakeFiles/SDL2.dir/src/render/opengles2/SDL_render_gles2.c.obj
+[ 59%] Building C object CMakeFiles/SDL2.dir/src/render/opengles2/SDL_shaders_gles2.c.obj
+[ 60%] Building C object CMakeFiles/SDL2.dir/src/render/ps2/SDL_render_ps2.c.obj
+[ 60%] Building C object CMakeFiles/SDL2.dir/src/render/psp/SDL_render_psp.c.obj
+[ 60%] Building C object CMakeFiles/SDL2.dir/src/render/software/SDL_blendfillrect.c.obj
+[ 61%] Building C object CMakeFiles/SDL2.dir/src/render/software/SDL_blendline.c.obj
+[ 61%] Building C object CMakeFiles/SDL2.dir/src/render/software/SDL_blendpoint.c.obj
+[ 61%] Building C object CMakeFiles/SDL2.dir/src/render/software/SDL_drawline.c.obj
+[ 62%] Building C object CMakeFiles/SDL2.dir/src/render/software/SDL_drawpoint.c.obj
+[ 62%] Building C object CMakeFiles/SDL2.dir/src/render/software/SDL_render_sw.c.obj
+[ 62%] Building C object CMakeFiles/SDL2.dir/src/render/software/SDL_rotate.c.obj
+[ 63%] Building C object CMakeFiles/SDL2.dir/src/render/software/SDL_triangle.c.obj
+[ 63%] Building C object CMakeFiles/SDL2.dir/src/render/vitagxm/SDL_render_vita_gxm.c.obj
+[ 64%] Building C object CMakeFiles/SDL2.dir/src/render/vitagxm/SDL_render_vita_gxm_memory.c.obj
+[ 64%] Building C object CMakeFiles/SDL2.dir/src/render/vitagxm/SDL_render_vita_gxm_tools.c.obj
+[ 64%] Building C object CMakeFiles/SDL2.dir/src/sensor/SDL_sensor.c.obj
+[ 65%] Building C object CMakeFiles/SDL2.dir/src/stdlib/SDL_crc16.c.obj
+[ 65%] Building C object CMakeFiles/SDL2.dir/src/stdlib/SDL_crc32.c.obj
+[ 65%] Building C object CMakeFiles/SDL2.dir/src/stdlib/SDL_getenv.c.obj
+[ 66%] Building C object CMakeFiles/SDL2.dir/src/stdlib/SDL_iconv.c.obj
+[ 66%] Building C object CMakeFiles/SDL2.dir/src/stdlib/SDL_malloc.c.obj
+[ 66%] Building C object CMakeFiles/SDL2.dir/src/stdlib/SDL_mslibc.c.obj
+[ 67%] Building C object CMakeFiles/SDL2.dir/src/stdlib/SDL_qsort.c.obj
+[ 67%] Building C object CMakeFiles/SDL2.dir/src/stdlib/SDL_stdlib.c.obj
+[ 67%] Building C object CMakeFiles/SDL2.dir/src/stdlib/SDL_string.c.obj
+[ 68%] Building C object CMakeFiles/SDL2.dir/src/stdlib/SDL_strtokr.c.obj
+[ 68%] Building C object CMakeFiles/SDL2.dir/src/thread/SDL_thread.c.obj
+[ 68%] Building C object CMakeFiles/SDL2.dir/src/timer/SDL_timer.c.obj
+[ 69%] Building C object CMakeFiles/SDL2.dir/src/video/SDL_RLEaccel.c.obj
+[ 69%] Building C object CMakeFiles/SDL2.dir/src/video/SDL_blit.c.obj
+[ 69%] Building C object CMakeFiles/SDL2.dir/src/video/SDL_blit_0.c.obj
+[ 70%] Building C object CMakeFiles/SDL2.dir/src/video/SDL_blit_1.c.obj
+[ 70%] Building C object CMakeFiles/SDL2.dir/src/video/SDL_blit_A.c.obj
+[ 70%] Building C object CMakeFiles/SDL2.dir/src/video/SDL_blit_N.c.obj
+[ 71%] Building C object CMakeFiles/SDL2.dir/src/video/SDL_blit_auto.c.obj
+[ 71%] Building C object CMakeFiles/SDL2.dir/src/video/SDL_blit_copy.c.obj
+[ 71%] Building C object CMakeFiles/SDL2.dir/src/video/SDL_blit_slow.c.obj
+[ 72%] Building C object CMakeFiles/SDL2.dir/src/video/SDL_bmp.c.obj
+[ 72%] Building C object CMakeFiles/SDL2.dir/src/video/SDL_clipboard.c.obj
+[ 72%] Building C object CMakeFiles/SDL2.dir/src/video/SDL_egl.c.obj
+[ 73%] Building C object CMakeFiles/SDL2.dir/src/video/SDL_fillrect.c.obj
+[ 73%] Building C object CMakeFiles/SDL2.dir/src/video/SDL_pixels.c.obj
+[ 74%] Building C object CMakeFiles/SDL2.dir/src/video/SDL_rect.c.obj
+[ 74%] Building C object CMakeFiles/SDL2.dir/src/video/SDL_shape.c.obj
+[ 74%] Building C object CMakeFiles/SDL2.dir/src/video/SDL_stretch.c.obj
+[ 75%] Building C object CMakeFiles/SDL2.dir/src/video/SDL_surface.c.obj
+[ 75%] Building C object CMakeFiles/SDL2.dir/src/video/SDL_video.c.obj
+[ 75%] Building C object CMakeFiles/SDL2.dir/src/video/SDL_vulkan_utils.c.obj
+[ 76%] Building C object CMakeFiles/SDL2.dir/src/video/SDL_yuv.c.obj
+[ 76%] Building C object CMakeFiles/SDL2.dir/src/video/yuv2rgb/yuv_rgb.c.obj
+[ 76%] Building C object CMakeFiles/SDL2.dir/src/audio/dummy/SDL_dummyaudio.c.obj
+[ 77%] Building C object CMakeFiles/SDL2.dir/src/audio/disk/SDL_diskaudio.c.obj
+[ 77%] Building C object CMakeFiles/SDL2.dir/src/joystick/virtual/SDL_virtualjoystick.c.obj
+[ 77%] Building C object CMakeFiles/SDL2.dir/src/video/dummy/SDL_nullevents.c.obj
+[ 78%] Building C object CMakeFiles/SDL2.dir/src/video/dummy/SDL_nullframebuffer.c.obj
+[ 78%] Building C object CMakeFiles/SDL2.dir/src/video/dummy/SDL_nullvideo.c.obj
+[ 78%] Building C object CMakeFiles/SDL2.dir/src/video/offscreen/SDL_offscreenevents.c.obj
+[ 79%] Building C object CMakeFiles/SDL2.dir/src/video/offscreen/SDL_offscreenframebuffer.c.obj
+[ 79%] Building C object CMakeFiles/SDL2.dir/src/video/offscreen/SDL_offscreenopengles.c.obj
+[ 79%] Building C object CMakeFiles/SDL2.dir/src/video/offscreen/SDL_offscreenvideo.c.obj
+[ 80%] Building C object CMakeFiles/SDL2.dir/src/video/offscreen/SDL_offscreenwindow.c.obj
+[ 80%] Building C object CMakeFiles/SDL2.dir/src/core/windows/SDL_hid.c.obj
+[ 80%] Building C object CMakeFiles/SDL2.dir/src/core/windows/SDL_immdevice.c.obj
+[ 81%] Building C object CMakeFiles/SDL2.dir/src/core/windows/SDL_windows.c.obj
+[ 81%] Building C object CMakeFiles/SDL2.dir/src/core/windows/SDL_xinput.c.obj
+[ 81%] Building C object CMakeFiles/SDL2.dir/src/misc/windows/SDL_sysurl.c.obj
+[ 82%] Building C object CMakeFiles/SDL2.dir/src/audio/winmm/SDL_winmm.c.obj
+[ 82%] Building C object CMakeFiles/SDL2.dir/src/audio/directsound/SDL_directsound.c.obj
+[ 82%] Building C object CMakeFiles/SDL2.dir/src/audio/wasapi/SDL_wasapi.c.obj
+[ 83%] Building C object CMakeFiles/SDL2.dir/src/audio/wasapi/SDL_wasapi_win32.c.obj
+[ 83%] Building C object CMakeFiles/SDL2.dir/src/video/windows/SDL_windowsclipboard.c.obj
+[ 84%] Building C object CMakeFiles/SDL2.dir/src/video/windows/SDL_windowsevents.c.obj
+[ 84%] Building C object CMakeFiles/SDL2.dir/src/video/windows/SDL_windowsframebuffer.c.obj
+[ 84%] Building C object CMakeFiles/SDL2.dir/src/video/windows/SDL_windowskeyboard.c.obj
+[ 85%] Building C object CMakeFiles/SDL2.dir/src/video/windows/SDL_windowsmessagebox.c.obj
+[ 85%] Building C object CMakeFiles/SDL2.dir/src/video/windows/SDL_windowsmodes.c.obj
+[ 85%] Building C object CMakeFiles/SDL2.dir/src/video/windows/SDL_windowsmouse.c.obj
+[ 86%] Building C object CMakeFiles/SDL2.dir/src/video/windows/SDL_windowsopengl.c.obj
+[ 86%] Building C object CMakeFiles/SDL2.dir/src/video/windows/SDL_windowsopengles.c.obj
+[ 86%] Building C object CMakeFiles/SDL2.dir/src/video/windows/SDL_windowsshape.c.obj
+[ 87%] Building C object CMakeFiles/SDL2.dir/src/video/windows/SDL_windowsvideo.c.obj
+[ 87%] Building C object CMakeFiles/SDL2.dir/src/video/windows/SDL_windowsvulkan.c.obj
+[ 87%] Building C object CMakeFiles/SDL2.dir/src/video/windows/SDL_windowswindow.c.obj
+[ 88%] Building C object CMakeFiles/SDL2.dir/src/thread/generic/SDL_syscond.c.obj
+[ 88%] Building C object CMakeFiles/SDL2.dir/src/thread/windows/SDL_syscond_cv.c.obj
+[ 88%] Building C object CMakeFiles/SDL2.dir/src/thread/windows/SDL_sysmutex.c.obj
+[ 89%] Building C object CMakeFiles/SDL2.dir/src/thread/windows/SDL_syssem.c.obj
+[ 89%] Building C object CMakeFiles/SDL2.dir/src/thread/windows/SDL_systhread.c.obj
+[ 89%] Building C object CMakeFiles/SDL2.dir/src/thread/windows/SDL_systls.c.obj
+[ 90%] Building C object CMakeFiles/SDL2.dir/src/sensor/windows/SDL_windowssensor.c.obj
+[ 90%] Building C object CMakeFiles/SDL2.dir/src/power/windows/SDL_syspower.c.obj
+[ 90%] Building C object CMakeFiles/SDL2.dir/src/locale/windows/SDL_syslocale.c.obj
+[ 91%] Building C object CMakeFiles/SDL2.dir/src/filesystem/windows/SDL_sysfilesystem.c.obj
+[ 91%] Building C object CMakeFiles/SDL2.dir/src/timer/windows/SDL_systimer.c.obj
+[ 91%] Building C object CMakeFiles/SDL2.dir/src/loadso/windows/SDL_sysloadso.c.obj
+[ 92%] Building C object CMakeFiles/SDL2.dir/src/joystick/hidapi/SDL_hidapi_combined.c.obj
+[ 92%] Building C object CMakeFiles/SDL2.dir/src/joystick/hidapi/SDL_hidapi_gamecube.c.obj
+[ 92%] Building C object CMakeFiles/SDL2.dir/src/joystick/hidapi/SDL_hidapi_luna.c.obj
+[ 93%] Building C object CMakeFiles/SDL2.dir/src/joystick/hidapi/SDL_hidapi_ps3.c.obj
+[ 94%] Building C object CMakeFiles/SDL2.dir/src/joystick/hidapi/SDL_hidapi_ps4.c.obj
+[ 94%] Building C object CMakeFiles/SDL2.dir/src/joystick/hidapi/SDL_hidapi_ps5.c.obj
+[ 94%] Building C object CMakeFiles/SDL2.dir/src/joystick/hidapi/SDL_hidapi_rumble.c.obj
+[ 94%] Building C object CMakeFiles/SDL2.dir/src/joystick/hidapi/SDL_hidapi_shield.c.obj
+[ 95%] Building C object CMakeFiles/SDL2.dir/src/joystick/hidapi/SDL_hidapi_stadia.c.obj
+[ 95%] Building C object CMakeFiles/SDL2.dir/src/joystick/hidapi/SDL_hidapi_steam.c.obj
+[ 95%] Building C object CMakeFiles/SDL2.dir/src/joystick/hidapi/SDL_hidapi_switch.c.obj
+[ 96%] Building C object CMakeFiles/SDL2.dir/src/joystick/hidapi/SDL_hidapi_wii.c.obj
+[ 96%] Building C object CMakeFiles/SDL2.dir/src/joystick/hidapi/SDL_hidapi_xbox360.c.obj
+[ 96%] Building C object CMakeFiles/SDL2.dir/src/joystick/hidapi/SDL_hidapi_xbox360w.c.obj
+[ 97%] Building C object CMakeFiles/SDL2.dir/src/joystick/hidapi/SDL_hidapi_xboxone.c.obj
+[ 97%] Building C object CMakeFiles/SDL2.dir/src/joystick/hidapi/SDL_hidapijoystick.c.obj
+[ 97%] Building C object CMakeFiles/SDL2.dir/src/joystick/windows/SDL_dinputjoystick.c.obj
+[ 98%] Building C object CMakeFiles/SDL2.dir/src/joystick/windows/SDL_rawinputjoystick.c.obj
+[ 98%] Building C object CMakeFiles/SDL2.dir/src/joystick/windows/SDL_windows_gaming_input.c.obj
+[ 98%] Building C object CMakeFiles/SDL2.dir/src/joystick/windows/SDL_windowsjoystick.c.obj
+[ 99%] Building C object CMakeFiles/SDL2.dir/src/joystick/windows/SDL_xinputjoystick.c.obj
+[ 99%] Building C object CMakeFiles/SDL2.dir/src/haptic/windows/SDL_dinputhaptic.c.obj
+[ 99%] Building C object CMakeFiles/SDL2.dir/src/haptic/windows/SDL_windowshaptic.c.obj
+[100%] Building C object CMakeFiles/SDL2.dir/src/haptic/windows/SDL_xinputhaptic.c.obj
+[100%] Building RC object CMakeFiles/SDL2.dir/src/main/windows/version.rc.res
+[100%] Linking C shared library SDL2.dll
+[100%] Built target SDL2
+Install the project...
+-- Install configuration: "Release"
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/lib/libSDL2.dll.a
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/bin/SDL2.dll
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/lib/libSDL2main.a
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/lib/libSDL2_test.a
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/lib/cmake/SDL2/SDL2Targets.cmake
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/lib/cmake/SDL2/SDL2Targets-release.cmake
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/lib/cmake/SDL2/SDL2mainTargets.cmake
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/lib/cmake/SDL2/SDL2mainTargets-release.cmake
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/lib/cmake/SDL2/SDL2testTargets.cmake
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/lib/cmake/SDL2/SDL2testTargets-release.cmake
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/lib/cmake/SDL2/SDL2Config.cmake
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/lib/cmake/SDL2/SDL2ConfigVersion.cmake
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_assert.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_atomic.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_audio.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_bits.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_blendmode.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_clipboard.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_copying.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_cpuinfo.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_egl.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_endian.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_error.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_events.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_filesystem.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_gamecontroller.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_gesture.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_guid.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_haptic.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_hidapi.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_hints.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_joystick.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_keyboard.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_keycode.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_loadso.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_locale.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_log.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_main.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_messagebox.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_metal.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_misc.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_mouse.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_mutex.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_name.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_opengl.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_opengl_glext.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_opengles.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_opengles2.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_opengles2_gl2.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_opengles2_gl2ext.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_opengles2_gl2platform.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_opengles2_khrplatform.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_pixels.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_platform.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_power.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_quit.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_rect.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_render.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_rwops.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_scancode.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_sensor.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_shape.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_stdinc.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_surface.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_system.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_syswm.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_test.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_test_assert.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_test_common.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_test_compare.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_test_crc32.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_test_font.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_test_fuzzer.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_test_harness.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_test_images.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_test_log.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_test_md5.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_test_memory.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_test_random.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_thread.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_timer.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_touch.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_types.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_version.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_video.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_vulkan.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/begin_code.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/close_code.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_revision.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/include/SDL2/SDL_config.h
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/share/licenses/SDL2/LICENSE.txt
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/lib/pkgconfig/sdl2.pc
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/bin/sdl2-config
+-- Installing: /home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/share/aclocal/sdl2.m4
+cargo:root=/home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out
+cargo:rustc-link-search=/home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/lib64
+cargo:rustc-link-search=/home/omar/Documents/egui_sdl2_gl/target/x86_64-pc-windows-gnu/release/build/sdl2-sys-cf8d714bfeee1dc7/out/lib
+cargo:include=/home/omar/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sdl2-sys-0.37.0/SDL/include
+cargo:rustc-flags=-l SDL2
