@@ -112,6 +112,7 @@ float schlick(float cosine, float ref_idx)
     return r0 + (1.0 - r0) * pow((1.0 - cosine), 5.0);
 }
 
+
 bool refract(vec3 v, vec3 n, float ni_over_nt, inout vec3 refracted)
 {
     vec3 uv = normalize(v);
@@ -126,10 +127,12 @@ bool refract(vec3 v, vec3 n, float ni_over_nt, inout vec3 refracted)
         return false;
 }
 
+
 vec3 reflect(vec3 v, vec3 n)
 {
     return v - 2.0 * dot(v, n) * n;
 }
+
 
 void applyBloom(inout vec3 color, vec3 light, float threshold, float intensity)
 {
