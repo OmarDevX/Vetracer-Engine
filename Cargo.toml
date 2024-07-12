@@ -25,7 +25,7 @@ version = "0.17"
 optional = true
 
 [features]
-default = ["sdl2_bundled"]
+default = ["sdl2_bundled","use_epi"]
 
 sdl2_unsafe_textures = ["sdl2/unsafe_textures"]
 sdl2_gfx = ["sdl2/gfx"]

@@ -13,10 +13,10 @@ use gl::types::{GLchar, GLenum, GLint, GLsizeiptr, GLsync, GLuint};
 use std::convert::TryInto;
 use std::ffi::CString;
 
-const DEFAULT_VERT_SRC: &str = include_str!("../shaders/default.vert");
-const DEFAULT_FRAG_SRC: &str = include_str!("../shaders/default.frag");
-const ADAPTIVE_VERT_SRC: &str = include_str!("../shaders/adaptive.vert");
-const ADAPTIVE_FRAG_SRC: &str = include_str!("../shaders/adaptive.frag");
+const DEFAULT_VERT_SRC: &str = include_str!("../shaders/default/default.vert");
+const DEFAULT_FRAG_SRC: &str = include_str!("../shaders/default/default.frag");
+const ADAPTIVE_VERT_SRC: &str = include_str!("../shaders/default/adaptive.vert");
+const ADAPTIVE_FRAG_SRC: &str = include_str!("../shaders/default/adaptive.frag");
 
 #[derive(Default)]
 struct Texture {
